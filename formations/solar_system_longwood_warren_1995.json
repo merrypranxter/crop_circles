@@ -1,0 +1,58 @@
+{
+  "id": "solar_system_longwood_warren_1995",
+  "name": "Solar System Longwood Warren",
+  "epoch": "classic_90s",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "barley",
+    "season": "early_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 80.0,
+    "symmetry_order": 1,
+    "sector_count": 1,
+    "ring_count": 6,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.5,
+    "alien_technical": 0.9,
+    "minimalist": 0.5
+  },
+  "motifs": [
+    {
+      "family": "solar_system",
+      "id": "orbital_diagram",
+      "priority": 1,
+      "params": {
+        "planet_count": 6,
+        "central_disc": true,
+        "orbit_rings": true,
+        "planet_positions_encoded": true,
+        "alignment_date": "1995-06-22",
+        "asteroid_belt": true,
+        "comet_path": false
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.05
+  },
+  "encoding": {
+    "grid_mode": "polar",
+    "bitmap_resolution": [6, 1],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": true, "system": "solar_position" },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.15,
+    "contrast": 0.9,
+    "specular_variation": 0.3
+  }
+}

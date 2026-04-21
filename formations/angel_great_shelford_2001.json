@@ -1,0 +1,66 @@
+{
+  "id": "angel_great_shelford_2001",
+  "name": "Angel Great Shelford",
+  "epoch": "modern",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 60.0,
+    "symmetry_order": 2,
+    "sector_count": 2,
+    "ring_count": 1,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.5,
+    "alien_technical": 0.4,
+    "minimalist": 0.6
+  },
+  "motifs": [
+    {
+      "family": "bird_angel",
+      "id": "angel_body",
+      "priority": 1,
+      "params": {
+        "body_circles": 5,
+        "wing_style": "arc_layered",
+        "wing_span_ratio": 2.0,
+        "head_disc": true,
+        "tail_extension": true,
+        "bilateral_symmetry": true
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.2
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": [
+      {
+        "id": "angel_icon",
+        "type": "goddess",
+        "embedding_mode": "center",
+        "scale": 0.9,
+        "orientation": 0.0,
+        "detail_level": 0.5
+      }
+    ]
+  },
+  "medium_render": {
+    "edge_softness": 0.3,
+    "contrast": 0.75,
+    "specular_variation": 0.45
+  }
+}

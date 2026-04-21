@@ -1,0 +1,54 @@
+{
+  "id": "sunnyside_labyrinth_2015",
+  "name": "Sunnyside Classical Labyrinth",
+  "epoch": "modern",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "barley",
+    "season": "early_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 15.0,
+    "symmetry_order": 1,
+    "sector_count": 1,
+    "ring_count": 8,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.6,
+    "alien_technical": 0.1,
+    "minimalist": 0.5
+  },
+  "motifs": [
+    {
+      "family": "labyrinth",
+      "id": "main_labyrinth",
+      "priority": 1,
+      "params": {
+        "circuit_count": 7,
+        "inverse": false,
+        "path_width": 1.0
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "tangential",
+    "ring_flows": [],
+    "imperfection": 0.3
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.35,
+    "contrast": 0.75,
+    "specular_variation": 0.5
+  }
+}

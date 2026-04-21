@@ -1,0 +1,71 @@
+{
+  "id": "spiderweb_avebury_1994",
+  "name": "Spiderweb Avebury",
+  "epoch": "classic_90s",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "late_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 70.0,
+    "symmetry_order": 5,
+    "sector_count": 10,
+    "ring_count": 4,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.8,
+    "alien_technical": 0.3,
+    "minimalist": 0.4
+  },
+  "motifs": [
+    {
+      "family": "vesica_torus",
+      "id": "web_structure",
+      "priority": 1,
+      "params": {
+        "radial_lines": 10,
+        "concentric_rings": 4,
+        "ring_spacing": "uniform",
+        "web_style": "spider",
+        "node_circles": false
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "ring_weave",
+      "type": "weave_ring",
+      "region": "ring_2",
+      "params": {
+        "segment_count": 20,
+        "alternating": true
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "tangential",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" },
+      { "ring_index": 1, "direction": "ccw" },
+      { "ring_index": 2, "direction": "cw" },
+      { "ring_index": 3, "direction": "ccw" }
+    ],
+    "imperfection": 0.15
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.3,
+    "contrast": 0.7,
+    "specular_variation": 0.6
+  }
+}

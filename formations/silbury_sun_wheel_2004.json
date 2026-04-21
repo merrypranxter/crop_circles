@@ -1,0 +1,70 @@
+{
+  "id": "silbury_sun_wheel_2004",
+  "name": "Silbury Sun Wheel",
+  "epoch": "modern",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "early_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 53.0,
+    "symmetry_order": 8,
+    "sector_count": 8,
+    "ring_count": 3,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.9,
+    "alien_technical": 0.3,
+    "minimalist": 0.3
+  },
+  "motifs": [
+    {
+      "family": "circle_mandala",
+      "id": "sun_wheel",
+      "priority": 1,
+      "params": {
+        "ring_count": 3,
+        "spoke_count": 8,
+        "flame_segments": true,
+        "flame_count": 8,
+        "central_disc": true,
+        "outer_ring": true
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "spoke_tips",
+      "type": "mini_circle",
+      "region": "ring_2",
+      "params": {
+        "density": 1.0,
+        "has_central_hole": false,
+        "swirl_offset": 0.0
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" }
+    ],
+    "imperfection": 0.08
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.15,
+    "contrast": 0.9,
+    "specular_variation": 0.35
+  }
+}
