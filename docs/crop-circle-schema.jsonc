@@ -1,0 +1,334 @@
+// Crop circle formation schema and examples for shader/generative art
+// JSONC (JSON with comments) – strip comments if you need strict JSON.
+{
+  "schema_version": 1,
+
+  "enums": {
+    "epoch": ["early", "classic_90s", "modern", "experimental"],
+    "complexity": [1, 2, 3, 4],
+    "crop_type": ["wheat", "barley", "canola", "maize", "oats", "grass", "snow", "other"],
+    "motif_family": [
+      "circle_simple",
+      "circle_group",
+      "circle_mandala",
+      "spiral_galaxy",
+      "labyrinth",
+      "yin_yang",
+      "cube_projection",
+      "hypercube_cross",
+      "metatrons_cube",
+      "vesica_torus",
+      "dna_helix",
+      "insectogram",
+      "serpent_chain",
+      "bird_angel",
+      "tree_axis",
+      "chakra_column",
+      "magnet_field",
+      "solar_system",
+      "message_grid",
+      "pi_encoder",
+      "calendar_diagram",
+      "symbolic_icon"
+    ],
+    "micro_motif_type": [
+      "mini_circle",
+      "horn",
+      "figure8",
+      "checkerboard",
+      "weave_ring",
+      "star_cluster"
+    ],
+    "symbol_type": [
+      "pentagram",
+      "triquetra",
+      "tree",
+      "bird",
+      "goddess",
+      "eye",
+      "chakra",
+      "other"
+    ]
+  },
+
+  "formation_schema": {
+    "id": "string",                    // unique slug, e.g. "milk_hill_2001"
+    "name": "string",                  // human-readable name
+    "epoch": "epoch",                  // stylistic/temporal phase
+    "complexity": "complexity",        // 1–4 simple→mandala
+
+    "medium": {
+      "crop_type": "crop_type",
+      "season": "string",              // free-form label
+      "ghost_layers": "number"         // how many past formations show as ghosts
+    },
+
+    "layout": {
+      "footprint_radius": "number",    // meters or normalized units
+      "symmetry_order": "number",      // n-fold rotational symmetry
+      "sector_count": "number",        // angular slices
+      "ring_count": "number",          // concentric bands
+      "center_offset": ["number", "number"],
+      "meta_pattern": "string"         // e.g. "none", "triangle", "line", "ley_polygon"
+    },
+
+    "style_weights": {
+      "sacred_geometry": "number",     // 0–1
+      "alien_technical": "number",     // 0–1
+      "minimalist": "number"           // 0–1
+    },
+
+    "motifs": [
+      {
+        "family": "motif_family",
+        "id": "string",                // local identifier
+        "priority": "number",          // 1 = primary
+        "params": {}                    // free-form per family (see examples)
+      }
+    ],
+
+    "micro_motifs": [
+      {
+        "id": "string",
+        "type": "micro_motif_type",
+        "region": "string",            // e.g. "inner_disc", "ring_2"
+        "params": {}                    // density, cell counts, etc.
+      }
+    ],
+
+    "flow": {
+      "global_flow": "string",         // "radial", "spiral", "tangential", "custom_field"
+      "ring_flows": [
+        { "ring_index": "number", "direction": "string" } // "cw" | "ccw"
+      ],
+      "imperfection": "number"         // 0=perfect, 1=very irregular
+    },
+
+    "encoding": {
+      "grid_mode": "string",           // "none", "rectangular", "polar"
+      "bitmap_resolution": ["number", "number"],
+      "pi_encoder": {
+        "enabled": "boolean",
+        "digits": "number"
+      },
+      "calendar": {
+        "enabled": "boolean",
+        "system": "string"             // e.g. "british_megalithic", "mayan"
+      },
+      "symbol_icons": [
+        {
+          "id": "string",
+          "type": "symbol_type",
+          "embedding_mode": "string",  // "center", "ring", "satellite"
+          "scale": "number",           // 0–1 relative radius
+          "orientation": "number",     // radians
+          "detail_level": "number"     // 0–1 literal vs abstract
+        }
+      ]
+    },
+
+    "medium_render": {
+      "edge_softness": "number",       // 0=sharp, 1=soft
+      "contrast": "number",           // brightness difference standing/flattened
+      "specular_variation": "number"  // highlight modulation by lay direction
+    }
+  },
+
+  "examples": {
+    // 1. Milk Hill 2001 spiral galaxy / Julia-style multi-spiral
+    "milk_hill_2001": {
+      "id": "milk_hill_2001",
+      "name": "Milk Hill Galaxy Spiral",
+      "epoch": "modern",
+      "complexity": 4,
+      "medium": {
+        "crop_type": "wheat",
+        "season": "mid_summer",
+        "ghost_layers": 0
+      },
+      "layout": {
+        "footprint_radius": 250.0,
+        "symmetry_order": 6,
+        "sector_count": 72,
+        "ring_count": 5,
+        "center_offset": [0.0, 0.0],
+        "meta_pattern": "none"
+      },
+      "style_weights": {
+        "sacred_geometry": 0.8,
+        "alien_technical": 0.6,
+        "minimalist": 0.1
+      },
+      "motifs": [
+        {
+          "family": "spiral_galaxy",
+          "id": "main_spiral",
+          "priority": 1,
+          "params": {
+            "arm_count": 6,
+            "circle_chain": true,
+            "circle_count": 409,
+            "radius_progression": "geometric",
+            "fractal_depth": 2
+          }
+        }
+      ],
+      "micro_motifs": [
+        {
+          "id": "outer_minis",
+          "type": "mini_circle",
+          "region": "ring_4",
+          "params": {
+            "density": 0.5,
+            "has_central_hole": true,
+            "swirl_offset": 0.3
+          }
+        }
+      ],
+      "flow": {
+        "global_flow": "spiral",
+        "ring_flows": [
+          { "ring_index": 0, "direction": "cw" },
+          { "ring_index": 1, "direction": "ccw" },
+          { "ring_index": 2, "direction": "cw" }
+        ],
+        "imperfection": 0.2
+      },
+      "encoding": {
+        "grid_mode": "none",
+        "bitmap_resolution": [0, 0],
+        "pi_encoder": { "enabled": false, "digits": 0 },
+        "calendar": { "enabled": false, "system": null },
+        "symbol_icons": []
+      },
+      "medium_render": {
+        "edge_softness": 0.3,
+        "contrast": 0.8,
+        "specular_variation": 0.5
+      }
+    },
+
+    // 2. Barbury Castle 2008 Pi encoder
+    "barbury_pi_2008": {
+      "id": "barbury_pi_2008",
+      "name": "Barbury Castle Pi Encoder",
+      "epoch": "modern",
+      "complexity": 4,
+      "medium": {
+        "crop_type": "wheat",
+        "season": "early_summer",
+        "ghost_layers": 0
+      },
+      "layout": {
+        "footprint_radius": 80.0,
+        "symmetry_order": 10,          // 10 main sectors for first 10 digits
+        "sector_count": 40,
+        "ring_count": 3,
+        "center_offset": [0.0, 0.0],
+        "meta_pattern": "none"
+      },
+      "style_weights": {
+        "sacred_geometry": 0.7,
+        "alien_technical": 0.9,
+        "minimalist": 0.2
+      },
+      "motifs": [
+        {
+          "family": "pi_encoder",
+          "id": "pi_ring",
+          "priority": 1,
+          "params": {
+            "digit_count": 10,
+            "base": 10,
+            "outer_radius": 1.0,
+            "inner_radius": 0.6
+          }
+        },
+        {
+          "family": "circle_mandala",
+          "id": "frame",
+          "priority": 2,
+          "params": {
+            "ring_count": 2,
+            "petal_count": 0,
+            "star_orders": [5]
+          }
+        }
+      ],
+      "micro_motifs": [],
+      "flow": {
+        "global_flow": "radial",
+        "ring_flows": [],
+        "imperfection": 0.1
+      },
+      "encoding": {
+        "grid_mode": "polar",
+        "bitmap_resolution": [10, 1],
+        "pi_encoder": { "enabled": true, "digits": 10 },
+        "calendar": { "enabled": false, "system": null },
+        "symbol_icons": []
+      },
+      "medium_render": {
+        "edge_softness": 0.25,
+        "contrast": 0.85,
+        "specular_variation": 0.4
+      }
+    },
+
+    // 3. Sunnyside classical labyrinth 2015
+    "sunnyside_labyrinth_2015": {
+      "id": "sunnyside_labyrinth_2015",
+      "name": "Sunnyside Classical Labyrinth",
+      "epoch": "modern",
+      "complexity": 3,
+      "medium": {
+        "crop_type": "barley",
+        "season": "early_summer",
+        "ghost_layers": 0
+      },
+      "layout": {
+        "footprint_radius": 15.0,
+        "symmetry_order": 1,
+        "sector_count": 1,
+        "ring_count": 8,                 // 7 circuits + outer boundary
+        "center_offset": [0.0, 0.0],
+        "meta_pattern": "none"
+      },
+      "style_weights": {
+        "sacred_geometry": 0.6,
+        "alien_technical": 0.1,
+        "minimalist": 0.5
+      },
+      "motifs": [
+        {
+          "family": "labyrinth",
+          "id": "main_labyrinth",
+          "priority": 1,
+          "params": {
+            "circuit_count": 7,
+            "inverse": false,
+            "path_width": 1.0
+          }
+        }
+      ],
+      "micro_motifs": [],
+      "flow": {
+        "global_flow": "tangential",
+        "ring_flows": [],
+        "imperfection": 0.3
+      },
+      "encoding": {
+        "grid_mode": "none",
+        "bitmap_resolution": [0, 0],
+        "pi_encoder": { "enabled": false, "digits": 0 },
+        "calendar": { "enabled": false, "system": null },
+        "symbol_icons": []
+      },
+      "medium_render": {
+        "edge_softness": 0.35,
+        "contrast": 0.75,
+        "specular_variation": 0.5
+      }
+    }
+  }
+}
