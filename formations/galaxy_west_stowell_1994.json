@@ -1,0 +1,70 @@
+{
+  "id": "galaxy_west_stowell_1994",
+  "name": "Galaxy West Stowell",
+  "epoch": "classic_90s",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 100.0,
+    "symmetry_order": 4,
+    "sector_count": 16,
+    "ring_count": 3,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.7,
+    "alien_technical": 0.5,
+    "minimalist": 0.2
+  },
+  "motifs": [
+    {
+      "family": "spiral_galaxy",
+      "id": "main_galaxy",
+      "priority": 1,
+      "params": {
+        "arm_count": 4,
+        "circle_chain": true,
+        "circle_count": 80,
+        "radius_progression": "logarithmic",
+        "fractal_depth": 1,
+        "bar_structure": true
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "core_cluster",
+      "type": "star_cluster",
+      "region": "inner_disc",
+      "params": {
+        "density": 0.7,
+        "radial_scatter": 0.2
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "spiral",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" },
+      { "ring_index": 1, "direction": "cw" }
+    ],
+    "imperfection": 0.25
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.35,
+    "contrast": 0.75,
+    "specular_variation": 0.5
+  }
+}

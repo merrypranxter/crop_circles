@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "schema_version": 1,
+    "formation_count": 17,
+    "last_updated": "2026-04-21",
+    "description": "Flat manifest of all crop circle formations in this library. Fields are a subset of the full formation schema — load individual files in formations/ for complete data."
+  },
+  "formations": [
+    {
+      "id": "milk_hill_2001",
+      "name": "Milk Hill Galaxy Spiral",
+      "epoch": "modern",
+      "complexity": 4,
+      "location": "Milk Hill, Wiltshire, UK",
+      "date": "2001-08-12",
+      "primary_motif_family": "spiral_galaxy",
+      "symmetry_order": 6,
+      "style_weights": { "sacred_geometry": 0.8, "alien_technical": 0.6, "minimalist": 0.1 }
+    },
+    {
+      "id": "julia_set_stonehenge_1996",
+      "name": "Julia Set Stonehenge",
+      "epoch": "classic_90s",
+      "complexity": 3,
+      "location": "Near Stonehenge, Wiltshire, UK",
+      "date": "1996-07-07",
+      "primary_motif_family": "spiral_galaxy",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.5, "alien_technical": 0.9, "minimalist": 0.3 }
+    },
+    {
+      "id": "triple_julia_avebury_1996",
+      "name": "Triple Julia Set Avebury",
+      "epoch": "classic_90s",
+      "complexity": 4,
+      "location": "Avebury Trusloe, Wiltshire, UK",
+      "date": "1996-07-01",
+      "primary_motif_family": "spiral_galaxy",
+      "symmetry_order": 3,
+      "style_weights": { "sacred_geometry": 0.6, "alien_technical": 0.9, "minimalist": 0.1 }
+    },
+    {
+      "id": "koch_fractal_milk_hill_1997",
+      "name": "Koch Fractal Milk Hill",
+      "epoch": "classic_90s",
+      "complexity": 4,
+      "location": "Milk Hill, Wiltshire, UK",
+      "date": "1997-08-08",
+      "primary_motif_family": "circle_mandala",
+      "symmetry_order": 6,
+      "style_weights": { "sacred_geometry": 0.4, "alien_technical": 0.8, "minimalist": 0.2 }
+    },
+    {
+      "id": "barbury_castle_tetrahedron_1991",
+      "name": "Barbury Castle Tetrahedron",
+      "epoch": "early",
+      "complexity": 3,
+      "location": "Barbury Castle, Wiltshire, UK",
+      "date": "1991-07-17",
+      "primary_motif_family": "cube_projection",
+      "symmetry_order": 3,
+      "style_weights": { "sacred_geometry": 0.9, "alien_technical": 0.5, "minimalist": 0.4 }
+    },
+    {
+      "id": "solar_system_longwood_warren_1995",
+      "name": "Solar System Longwood Warren",
+      "epoch": "classic_90s",
+      "complexity": 3,
+      "location": "Longwood Warren, Hampshire, UK",
+      "date": "1995-06-22",
+      "primary_motif_family": "solar_system",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.5, "alien_technical": 0.9, "minimalist": 0.5 }
+    },
+    {
+      "id": "galaxy_west_stowell_1994",
+      "name": "Galaxy West Stowell",
+      "epoch": "classic_90s",
+      "complexity": 3,
+      "location": "West Stowell, Wiltshire, UK",
+      "date": "1994-07-23",
+      "primary_motif_family": "spiral_galaxy",
+      "symmetry_order": 4,
+      "style_weights": { "sacred_geometry": 0.7, "alien_technical": 0.5, "minimalist": 0.2 }
+    },
+    {
+      "id": "dna_helix_alton_barnes_1996",
+      "name": "DNA Helix Alton Barnes",
+      "epoch": "classic_90s",
+      "complexity": 3,
+      "location": "Near Alton Barnes, Wiltshire, UK",
+      "date": "1996-06-17",
+      "primary_motif_family": "dna_helix",
+      "symmetry_order": 2,
+      "style_weights": { "sacred_geometry": 0.4, "alien_technical": 0.9, "minimalist": 0.3 }
+    },
+    {
+      "id": "spiderweb_avebury_1994",
+      "name": "Spiderweb Avebury",
+      "epoch": "classic_90s",
+      "complexity": 3,
+      "location": "Avebury, Wiltshire, UK",
+      "date": "1994-08-11",
+      "primary_motif_family": "vesica_torus",
+      "symmetry_order": 5,
+      "style_weights": { "sacred_geometry": 0.8, "alien_technical": 0.3, "minimalist": 0.4 }
+    },
+    {
+      "id": "angel_great_shelford_2001",
+      "name": "Angel Great Shelford",
+      "epoch": "modern",
+      "complexity": 3,
+      "location": "Great Shelford, Cambridgeshire, UK",
+      "date": "2001-07-25",
+      "primary_motif_family": "bird_angel",
+      "symmetry_order": 2,
+      "style_weights": { "sacred_geometry": 0.5, "alien_technical": 0.4, "minimalist": 0.6 }
+    },
+    {
+      "id": "magnetic_fields_avebury_2000",
+      "name": "Magnetic Fields Avebury Trusloe",
+      "epoch": "modern",
+      "complexity": 4,
+      "location": "Avebury Trusloe, Wiltshire, UK",
+      "date": "2000-07-22",
+      "primary_motif_family": "magnet_field",
+      "symmetry_order": 6,
+      "style_weights": { "sacred_geometry": 0.9, "alien_technical": 0.4, "minimalist": 0.2 }
+    },
+    {
+      "id": "silbury_sun_wheel_2004",
+      "name": "Silbury Sun Wheel",
+      "epoch": "modern",
+      "complexity": 3,
+      "location": "Near Silbury Hill, Wiltshire, UK",
+      "date": "2004-06-19",
+      "primary_motif_family": "circle_mandala",
+      "symmetry_order": 8,
+      "style_weights": { "sacred_geometry": 0.9, "alien_technical": 0.3, "minimalist": 0.3 }
+    },
+    {
+      "id": "chilbolton_arecibo_2001",
+      "name": "Chilbolton Arecibo Response",
+      "epoch": "modern",
+      "complexity": 4,
+      "location": "Near Chilbolton, Hampshire, UK",
+      "date": "2001-08-01",
+      "primary_motif_family": "message_grid",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.2, "alien_technical": 1.0, "minimalist": 0.1 }
+    },
+    {
+      "id": "chilbolton_face_2001",
+      "name": "Chilbolton Face",
+      "epoch": "modern",
+      "complexity": 3,
+      "location": "Near Chilbolton, Hampshire, UK",
+      "date": "2001-08-01",
+      "primary_motif_family": "message_grid",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.1, "alien_technical": 1.0, "minimalist": 0.2 }
+    },
+    {
+      "id": "crabwood_alien_disk_2002",
+      "name": "Crabwood Alien Face and Disk",
+      "epoch": "modern",
+      "complexity": 4,
+      "location": "Near Crabwood, Hampshire, UK",
+      "date": "2002-08-14",
+      "primary_motif_family": "message_grid",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.3, "alien_technical": 1.0, "minimalist": 0.1 }
+    },
+    {
+      "id": "barbury_pi_2008",
+      "name": "Barbury Castle Pi Encoder",
+      "epoch": "modern",
+      "complexity": 4,
+      "location": "Barbury Castle, Wiltshire, UK",
+      "date": "2008-06-01",
+      "primary_motif_family": "pi_encoder",
+      "symmetry_order": 10,
+      "style_weights": { "sacred_geometry": 0.7, "alien_technical": 0.9, "minimalist": 0.2 }
+    },
+    {
+      "id": "sunnyside_labyrinth_2015",
+      "name": "Sunnyside Classical Labyrinth",
+      "epoch": "modern",
+      "complexity": 3,
+      "location": "Sunnyside, UK",
+      "date": "2015-06-01",
+      "primary_motif_family": "labyrinth",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.6, "alien_technical": 0.1, "minimalist": 0.5 }
+    }
+  ]
+}

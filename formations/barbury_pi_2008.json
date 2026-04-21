@@ -1,0 +1,65 @@
+{
+  "id": "barbury_pi_2008",
+  "name": "Barbury Castle Pi Encoder",
+  "epoch": "modern",
+  "complexity": 4,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "early_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 80.0,
+    "symmetry_order": 10,
+    "sector_count": 40,
+    "ring_count": 3,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.7,
+    "alien_technical": 0.9,
+    "minimalist": 0.2
+  },
+  "motifs": [
+    {
+      "family": "pi_encoder",
+      "id": "pi_ring",
+      "priority": 1,
+      "params": {
+        "digit_count": 10,
+        "base": 10,
+        "outer_radius": 1.0,
+        "inner_radius": 0.6
+      }
+    },
+    {
+      "family": "circle_mandala",
+      "id": "frame",
+      "priority": 2,
+      "params": {
+        "ring_count": 2,
+        "petal_count": 0,
+        "star_orders": [5]
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.1
+  },
+  "encoding": {
+    "grid_mode": "polar",
+    "bitmap_resolution": [10, 1],
+    "pi_encoder": { "enabled": true, "digits": 10 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.25,
+    "contrast": 0.85,
+    "specular_variation": 0.4
+  }
+}

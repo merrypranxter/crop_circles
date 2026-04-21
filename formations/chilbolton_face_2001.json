@@ -1,0 +1,58 @@
+{
+  "id": "chilbolton_face_2001",
+  "name": "Chilbolton Face",
+  "epoch": "modern",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "grass",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 35.0,
+    "symmetry_order": 1,
+    "sector_count": 1,
+    "ring_count": 0,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.1,
+    "alien_technical": 1.0,
+    "minimalist": 0.2
+  },
+  "motifs": [
+    {
+      "family": "message_grid",
+      "id": "halftone_face",
+      "priority": 1,
+      "params": {
+        "render_mode": "halftone_raster",
+        "subject": "humanoid_face",
+        "dot_size_variation": true,
+        "dot_size_range": [0.1, 1.0],
+        "grid_cols": 60,
+        "grid_rows": 80,
+        "bilateral_symmetry": false
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.08
+  },
+  "encoding": {
+    "grid_mode": "rectangular",
+    "bitmap_resolution": [60, 80],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.1,
+    "contrast": 0.9,
+    "specular_variation": 0.3
+  }
+}

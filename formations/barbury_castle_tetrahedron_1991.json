@@ -1,0 +1,79 @@
+{
+  "id": "barbury_castle_tetrahedron_1991",
+  "name": "Barbury Castle Tetrahedron",
+  "epoch": "early",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 90.0,
+    "symmetry_order": 3,
+    "sector_count": 3,
+    "ring_count": 2,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "triangle"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.9,
+    "alien_technical": 0.5,
+    "minimalist": 0.4
+  },
+  "motifs": [
+    {
+      "family": "cube_projection",
+      "id": "tetrahedron_main",
+      "priority": 1,
+      "params": {
+        "solid_type": "tetrahedron",
+        "projection": "top_down",
+        "vertex_circles": true,
+        "vertex_circle_count": 3,
+        "edge_lines": true,
+        "central_disc": true
+      }
+    },
+    {
+      "family": "circle_group",
+      "id": "vertex_satellites",
+      "priority": 2,
+      "params": {
+        "count": 3,
+        "placement": "triangle_vertices",
+        "has_inner_ring": true
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "inner_ratchet",
+      "type": "weave_ring",
+      "region": "inner_disc",
+      "params": {
+        "segment_count": 12,
+        "alternating": true
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" }
+    ],
+    "imperfection": 0.1
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.2,
+    "contrast": 0.85,
+    "specular_variation": 0.4
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "id": "koch_fractal_milk_hill_1997",
+  "name": "Koch Fractal Milk Hill",
+  "epoch": "classic_90s",
+  "complexity": 4,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "late_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 120.0,
+    "symmetry_order": 6,
+    "sector_count": 6,
+    "ring_count": 1,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.4,
+    "alien_technical": 0.8,
+    "minimalist": 0.2
+  },
+  "motifs": [
+    {
+      "family": "circle_mandala",
+      "id": "koch_outline",
+      "priority": 1,
+      "params": {
+        "fractal_type": "koch_snowflake",
+        "iteration_depth": 3,
+        "reference_points": 346,
+        "interior": "standing_crop",
+        "edge_style": "jagged_recursive"
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "edge_satellites",
+      "type": "mini_circle",
+      "region": "outer_boundary",
+      "params": {
+        "density": 0.8,
+        "has_central_hole": false,
+        "swirl_offset": 0.0
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.12
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.1,
+    "contrast": 0.9,
+    "specular_variation": 0.35
+  }
+}

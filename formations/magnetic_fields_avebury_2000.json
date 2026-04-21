@@ -1,0 +1,81 @@
+{
+  "id": "magnetic_fields_avebury_2000",
+  "name": "Magnetic Fields Avebury Trusloe",
+  "epoch": "modern",
+  "complexity": 4,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 110.0,
+    "symmetry_order": 6,
+    "sector_count": 12,
+    "ring_count": 6,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.9,
+    "alien_technical": 0.4,
+    "minimalist": 0.2
+  },
+  "motifs": [
+    {
+      "family": "magnet_field",
+      "id": "field_lines",
+      "priority": 1,
+      "params": {
+        "foci_count": 2,
+        "field_line_count": 24,
+        "field_type": "dipole",
+        "arc_style": "smooth",
+        "interference_rings": true
+      }
+    },
+    {
+      "family": "circle_mandala",
+      "id": "frame_rings",
+      "priority": 2,
+      "params": {
+        "ring_count": 3,
+        "petal_count": 0,
+        "star_orders": []
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "node_horns",
+      "type": "horn",
+      "region": "ring_3",
+      "params": {
+        "count": 12,
+        "curvature": 0.6
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "custom_field",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" },
+      { "ring_index": 1, "direction": "ccw" },
+      { "ring_index": 2, "direction": "cw" },
+      { "ring_index": 3, "direction": "ccw" }
+    ],
+    "imperfection": 0.1
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.2,
+    "contrast": 0.85,
+    "specular_variation": 0.5
+  }
+}
