@@ -1,0 +1,1930 @@
+# REPO SEED: crop_circles
+
+## Metadata
+- Name: crop_circles
+- Purpose: Reference data library for crop circle formations — schema, visual language docs, and individual formation JSON files — used as context for reposcripter and generative art systems
+- Tech Stack: JSON/JSONC data files, Node.js validator script
+- Deployment: Reference library / data source (no deployment)
+- License: MIT
+- GitHub: https://github.com/merrypranxter/crop_circles
+
+---
+
+## Directory Structure
+
+```
+crop_circles/
+├── docs/
+│   ├── crop-circle-schema.jsonc       ← canonical schema definition + enums (EXISTING)
+│   └── crop-circle-visual-language.md ← visual grammar reference doc (EXISTING)
+├── formations/
+│   ├── milk_hill_2001.json
+│   ├── barbury_pi_2008.json
+│   ├── sunnyside_labyrinth_2015.json
+│   ├── julia_set_stonehenge_1996.json
+│   ├── triple_julia_avebury_1996.json
+│   ├── koch_fractal_milk_hill_1997.json
+│   ├── barbury_castle_tetrahedron_1991.json
+│   ├── solar_system_longwood_warren_1995.json
+│   ├── galaxy_west_stowell_1994.json
+│   ├── dna_helix_alton_barnes_1996.json
+│   ├── spiderweb_avebury_1994.json
+│   ├── angel_great_shelford_2001.json
+│   ├── magnetic_fields_avebury_2000.json
+│   ├── silbury_sun_wheel_2004.json
+│   ├── chilbolton_arecibo_2001.json
+│   ├── chilbolton_face_2001.json
+│   └── crabwood_alien_disk_2002.json
+├── index.json                         ← flat manifest of all formations
+├── validate.js                        ← Node.js validator — checks formation files against schema
+├── AGENTS.md                          ← instructions for AI agents working on this repo
+├── README.md
+├── LICENSE
+└── .gitignore
+```
+
+---
+
+## File Contents
+
+### ===== FILE: README.md =====
+
+# crop_circles
+
+> Reference data library for crop circle formations — structured for use in generative art, shader systems, and AI-assisted creative tools.
+
+## What This Is
+
+This repo is a **data library**, not an application. It contains:
+
+- **`docs/crop-circle-schema.jsonc`** — The canonical schema defining all formation fields, enums, and parameters
+- **`docs/crop-circle-visual-language.md`** — Deep reference doc on the visual grammar of crop circles (symmetry types, motif families, flow/layering, famous formations)
+- **`formations/`** — Individual JSON files for 17 documented canonical formations, each conforming to the schema
+- **`index.json`** — Flat manifest of all formations for quick browsing/filtering
+- **`validate.js`** — Node.js script to validate formation files against the schema
+
+## Purpose
+
+This is a context source for:
+
+- **reposcripter** — AI-driven generative art pipeline (primary consumer)
+- **Shader Forge / GLSL generation** — formation data drives procedural crop circle shader generation
+- **Generative art systems** — schema parameters map directly to shader uniforms and p5.js sketch params
+
+## Formations Included
+
+| ID | Name | Epoch | Complexity | Motif Family |
+|----|------|-------|------------|--------------|
+| `milk_hill_2001` | Milk Hill Galaxy Spiral | modern | 4 | spiral_galaxy |
+| `julia_set_stonehenge_1996` | Julia Set Stonehenge | classic_90s | 3 | spiral_galaxy |
+| `triple_julia_avebury_1996` | Triple Julia Set Avebury | classic_90s | 4 | spiral_galaxy |
+| `koch_fractal_milk_hill_1997` | Koch Fractal Milk Hill | classic_90s | 4 | circle_mandala |
+| `barbury_castle_tetrahedron_1991` | Barbury Castle Tetrahedron | early | 3 | cube_projection |
+| `solar_system_longwood_warren_1995` | Solar System Longwood Warren | classic_90s | 3 | solar_system |
+| `galaxy_west_stowell_1994` | Galaxy West Stowell | classic_90s | 3 | spiral_galaxy |
+| `dna_helix_alton_barnes_1996` | DNA Helix Alton Barnes | classic_90s | 3 | dna_helix |
+| `spiderweb_avebury_1994` | Spiderweb Avebury | classic_90s | 3 | vesica_torus |
+| `angel_great_shelford_2001` | Angel Great Shelford | modern | 3 | bird_angel |
+| `magnetic_fields_avebury_2000` | Magnetic Fields Avebury Trusloe | modern | 4 | magnet_field |
+| `silbury_sun_wheel_2004` | Silbury Sun Wheel | modern | 3 | circle_mandala |
+| `chilbolton_arecibo_2001` | Chilbolton Arecibo Response | modern | 4 | message_grid |
+| `chilbolton_face_2001` | Chilbolton Face | modern | 3 | message_grid |
+| `crabwood_alien_disk_2002` | Crabwood Alien Face & Disk | modern | 4 | message_grid |
+| `barbury_pi_2008` | Barbury Castle Pi Encoder | modern | 4 | pi_encoder |
+| `sunnyside_labyrinth_2015` | Sunnyside Classical Labyrinth | modern | 3 | labyrinth |
+
+## Quick Usage
+
+```js
+// Load all formations
+const index = require('./index.json');
+
+// Load a specific formation
+const milkHill = require('./formations/milk_hill_2001.json');
+
+// Get all complexity-4 formations
+const complex = index.formations.filter(f => f.complexity === 4);
+
+// Get all spiral_galaxy formations
+const spirals = index.formations.filter(f =>
+  f.primary_motif_family === 'spiral_galaxy'
+);
+```
+
+## Validation
+
+```bash
+node validate.js                          # validate all formations
+node validate.js milk_hill_2001.json      # validate one formation
+```
+
+## Schema
+
+See `docs/crop-circle-schema.jsonc` for the full schema with comments.
+Key top-level fields per formation: `id`, `name`, `epoch`, `complexity`, `medium`, `layout`, `style_weights`, `motifs`, `micro_motifs`, `flow`, `encoding`, `medium_render`.
+
+## Part of the Ecosystem
+
+- [`merrypranxter/little_green_men`](https://github.com/merrypranxter/little_green_men) — alien iconography creative coding lab
+- [`merrypranxter/raymarching`](https://github.com/merrypranxter/raymarching) — GLSL raymarching workbench
+- [`merrypranxter/merrys_visual_bible`](https://github.com/merrypranxter/merrys_visual_bible) — creative/technical reference
+
+
+### ===== FILE: AGENTS.md =====
+
+# AGENTS.md — Instructions for AI Agents
+
+> Read this before touching anything.
+
+## What This Repo Is
+
+A **structured data library**. Not an app. Not a website. Just JSON formation files, schema docs, and a validator. The primary consumer is reposcripter (AI generative art pipeline). Secondary consumers are GLSL shader generation tools and p5.js sketch generators.
+
+## Rules
+
+### Data format
+- All formation files in `formations/` MUST be **strict JSON** (no comments, no trailing commas)
+- The schema reference is `docs/crop-circle-schema.jsonc` — JSONC (comments allowed) for human reading only
+- Every formation file MUST pass `node validate.js [filename]` before being considered complete
+- `index.json` MUST be regenerated any time a formation file is added, removed, or its top-level metadata changes
+
+### File naming
+- Formation files: `[slug]_[location]_[year].json` — all lowercase, underscores only
+- Slug should be the formation's common name or nickname, not a description
+- Examples: `milk_hill_2001.json`, `chilbolton_face_2001.json`, `barbury_pi_2008.json`
+
+### Field rules
+- `id` MUST match the filename without `.json`
+- `epoch` MUST be one of: `"early"`, `"classic_90s"`, `"modern"`, `"experimental"`
+- `complexity` MUST be 1, 2, 3, or 4 (integer, not string)
+- `style_weights` values MUST sum to ≤ 3.0 and each be between 0.0 and 1.0
+- `symmetry_order` of 0 or 1 = no rotational symmetry (valid for pictograms)
+- `motifs` array MUST have at least one entry with `priority: 1`
+- `flow.imperfection` MUST be between 0.0 (perfect) and 1.0 (very irregular)
+
+### What NOT to do
+- ❌ Do not add application code, HTML, CSS, or any frontend
+- ❌ Do not modify `docs/crop-circle-schema.jsonc` without explicit instruction — it's the source of truth
+- ❌ Do not add formations without sourcing them from the documented visual record
+- ❌ Do not use JSONC (comments) in `formations/` files — strict JSON only
+- ❌ Do not change the `validate.js` schema validation logic without testing all 17 existing formations
+
+## When Adding a New Formation
+
+1. Create `formations/[id].json` conforming to the schema
+2. Run `node validate.js [id].json` — must pass clean
+3. Add entry to `index.json` under `formations` array
+4. Increment `index.json` → `meta.formation_count`
+5. Update `README.md` formations table
+
+## index.json Structure
+
+Each entry in `index.json` must include:
+```json
+{
+  "id": "string",
+  "name": "string",
+  "epoch": "string",
+  "complexity": 1-4,
+  "location": "string",
+  "date": "string",
+  "primary_motif_family": "string",
+  "symmetry_order": number,
+  "style_weights": { "sacred_geometry": 0-1, "alien_technical": 0-1, "minimalist": 0-1 }
+}
+```
+
+## Validator Notes
+
+`validate.js` checks:
+- Required fields present
+- Enum values valid
+- Numeric ranges in bounds
+- `id` matches expected format
+- `motifs` array has a priority-1 entry
+
+Run with `node validate.js` (all files) or `node validate.js [filename]` (one file).
+Requires Node.js 14+. No npm install needed — uses only stdlib.
+
+
+### ===== FILE: index.json =====
+
+{
+  "meta": {
+    "schema_version": 1,
+    "formation_count": 17,
+    "last_updated": "2026-04-21",
+    "description": "Flat manifest of all crop circle formations in this library. Fields are a subset of the full formation schema — load individual files in formations/ for complete data."
+  },
+  "formations": [
+    {
+      "id": "milk_hill_2001",
+      "name": "Milk Hill Galaxy Spiral",
+      "epoch": "modern",
+      "complexity": 4,
+      "location": "Milk Hill, Wiltshire, UK",
+      "date": "2001-08-12",
+      "primary_motif_family": "spiral_galaxy",
+      "symmetry_order": 6,
+      "style_weights": { "sacred_geometry": 0.8, "alien_technical": 0.6, "minimalist": 0.1 }
+    },
+    {
+      "id": "julia_set_stonehenge_1996",
+      "name": "Julia Set Stonehenge",
+      "epoch": "classic_90s",
+      "complexity": 3,
+      "location": "Near Stonehenge, Wiltshire, UK",
+      "date": "1996-07-07",
+      "primary_motif_family": "spiral_galaxy",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.5, "alien_technical": 0.9, "minimalist": 0.3 }
+    },
+    {
+      "id": "triple_julia_avebury_1996",
+      "name": "Triple Julia Set Avebury",
+      "epoch": "classic_90s",
+      "complexity": 4,
+      "location": "Avebury Trusloe, Wiltshire, UK",
+      "date": "1996-07-01",
+      "primary_motif_family": "spiral_galaxy",
+      "symmetry_order": 3,
+      "style_weights": { "sacred_geometry": 0.6, "alien_technical": 0.9, "minimalist": 0.1 }
+    },
+    {
+      "id": "koch_fractal_milk_hill_1997",
+      "name": "Koch Fractal Milk Hill",
+      "epoch": "classic_90s",
+      "complexity": 4,
+      "location": "Milk Hill, Wiltshire, UK",
+      "date": "1997-08-08",
+      "primary_motif_family": "circle_mandala",
+      "symmetry_order": 6,
+      "style_weights": { "sacred_geometry": 0.4, "alien_technical": 0.8, "minimalist": 0.2 }
+    },
+    {
+      "id": "barbury_castle_tetrahedron_1991",
+      "name": "Barbury Castle Tetrahedron",
+      "epoch": "early",
+      "complexity": 3,
+      "location": "Barbury Castle, Wiltshire, UK",
+      "date": "1991-07-17",
+      "primary_motif_family": "cube_projection",
+      "symmetry_order": 3,
+      "style_weights": { "sacred_geometry": 0.9, "alien_technical": 0.5, "minimalist": 0.4 }
+    },
+    {
+      "id": "solar_system_longwood_warren_1995",
+      "name": "Solar System Longwood Warren",
+      "epoch": "classic_90s",
+      "complexity": 3,
+      "location": "Longwood Warren, Hampshire, UK",
+      "date": "1995-06-22",
+      "primary_motif_family": "solar_system",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.5, "alien_technical": 0.9, "minimalist": 0.5 }
+    },
+    {
+      "id": "galaxy_west_stowell_1994",
+      "name": "Galaxy West Stowell",
+      "epoch": "classic_90s",
+      "complexity": 3,
+      "location": "West Stowell, Wiltshire, UK",
+      "date": "1994-07-23",
+      "primary_motif_family": "spiral_galaxy",
+      "symmetry_order": 4,
+      "style_weights": { "sacred_geometry": 0.7, "alien_technical": 0.5, "minimalist": 0.2 }
+    },
+    {
+      "id": "dna_helix_alton_barnes_1996",
+      "name": "DNA Helix Alton Barnes",
+      "epoch": "classic_90s",
+      "complexity": 3,
+      "location": "Near Alton Barnes, Wiltshire, UK",
+      "date": "1996-06-17",
+      "primary_motif_family": "dna_helix",
+      "symmetry_order": 2,
+      "style_weights": { "sacred_geometry": 0.4, "alien_technical": 0.9, "minimalist": 0.3 }
+    },
+    {
+      "id": "spiderweb_avebury_1994",
+      "name": "Spiderweb Avebury",
+      "epoch": "classic_90s",
+      "complexity": 3,
+      "location": "Avebury, Wiltshire, UK",
+      "date": "1994-08-11",
+      "primary_motif_family": "vesica_torus",
+      "symmetry_order": 5,
+      "style_weights": { "sacred_geometry": 0.8, "alien_technical": 0.3, "minimalist": 0.4 }
+    },
+    {
+      "id": "angel_great_shelford_2001",
+      "name": "Angel Great Shelford",
+      "epoch": "modern",
+      "complexity": 3,
+      "location": "Great Shelford, Cambridgeshire, UK",
+      "date": "2001-07-25",
+      "primary_motif_family": "bird_angel",
+      "symmetry_order": 2,
+      "style_weights": { "sacred_geometry": 0.5, "alien_technical": 0.4, "minimalist": 0.6 }
+    },
+    {
+      "id": "magnetic_fields_avebury_2000",
+      "name": "Magnetic Fields Avebury Trusloe",
+      "epoch": "modern",
+      "complexity": 4,
+      "location": "Avebury Trusloe, Wiltshire, UK",
+      "date": "2000-07-22",
+      "primary_motif_family": "magnet_field",
+      "symmetry_order": 6,
+      "style_weights": { "sacred_geometry": 0.9, "alien_technical": 0.4, "minimalist": 0.2 }
+    },
+    {
+      "id": "silbury_sun_wheel_2004",
+      "name": "Silbury Sun Wheel",
+      "epoch": "modern",
+      "complexity": 3,
+      "location": "Near Silbury Hill, Wiltshire, UK",
+      "date": "2004-06-19",
+      "primary_motif_family": "circle_mandala",
+      "symmetry_order": 8,
+      "style_weights": { "sacred_geometry": 0.9, "alien_technical": 0.3, "minimalist": 0.3 }
+    },
+    {
+      "id": "chilbolton_arecibo_2001",
+      "name": "Chilbolton Arecibo Response",
+      "epoch": "modern",
+      "complexity": 4,
+      "location": "Near Chilbolton, Hampshire, UK",
+      "date": "2001-08-01",
+      "primary_motif_family": "message_grid",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.2, "alien_technical": 1.0, "minimalist": 0.1 }
+    },
+    {
+      "id": "chilbolton_face_2001",
+      "name": "Chilbolton Face",
+      "epoch": "modern",
+      "complexity": 3,
+      "location": "Near Chilbolton, Hampshire, UK",
+      "date": "2001-08-01",
+      "primary_motif_family": "message_grid",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.1, "alien_technical": 1.0, "minimalist": 0.2 }
+    },
+    {
+      "id": "crabwood_alien_disk_2002",
+      "name": "Crabwood Alien Face and Disk",
+      "epoch": "modern",
+      "complexity": 4,
+      "location": "Near Crabwood, Hampshire, UK",
+      "date": "2002-08-14",
+      "primary_motif_family": "message_grid",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.3, "alien_technical": 1.0, "minimalist": 0.1 }
+    },
+    {
+      "id": "barbury_pi_2008",
+      "name": "Barbury Castle Pi Encoder",
+      "epoch": "modern",
+      "complexity": 4,
+      "location": "Barbury Castle, Wiltshire, UK",
+      "date": "2008-06-01",
+      "primary_motif_family": "pi_encoder",
+      "symmetry_order": 10,
+      "style_weights": { "sacred_geometry": 0.7, "alien_technical": 0.9, "minimalist": 0.2 }
+    },
+    {
+      "id": "sunnyside_labyrinth_2015",
+      "name": "Sunnyside Classical Labyrinth",
+      "epoch": "modern",
+      "complexity": 3,
+      "location": "Sunnyside, UK",
+      "date": "2015-06-01",
+      "primary_motif_family": "labyrinth",
+      "symmetry_order": 1,
+      "style_weights": { "sacred_geometry": 0.6, "alien_technical": 0.1, "minimalist": 0.5 }
+    }
+  ]
+}
+
+
+### ===== FILE: formations/milk_hill_2001.json =====
+
+{
+  "id": "milk_hill_2001",
+  "name": "Milk Hill Galaxy Spiral",
+  "epoch": "modern",
+  "complexity": 4,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 250.0,
+    "symmetry_order": 6,
+    "sector_count": 72,
+    "ring_count": 5,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.8,
+    "alien_technical": 0.6,
+    "minimalist": 0.1
+  },
+  "motifs": [
+    {
+      "family": "spiral_galaxy",
+      "id": "main_spiral",
+      "priority": 1,
+      "params": {
+        "arm_count": 6,
+        "circle_chain": true,
+        "circle_count": 409,
+        "radius_progression": "geometric",
+        "fractal_depth": 2
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "outer_minis",
+      "type": "mini_circle",
+      "region": "ring_4",
+      "params": {
+        "density": 0.5,
+        "has_central_hole": true,
+        "swirl_offset": 0.3
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "spiral",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" },
+      { "ring_index": 1, "direction": "ccw" },
+      { "ring_index": 2, "direction": "cw" }
+    ],
+    "imperfection": 0.2
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.3,
+    "contrast": 0.8,
+    "specular_variation": 0.5
+  }
+}
+
+
+### ===== FILE: formations/julia_set_stonehenge_1996.json =====
+
+{
+  "id": "julia_set_stonehenge_1996",
+  "name": "Julia Set Stonehenge",
+  "epoch": "classic_90s",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "early_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 57.5,
+    "symmetry_order": 1,
+    "sector_count": 1,
+    "ring_count": 1,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.5,
+    "alien_technical": 0.9,
+    "minimalist": 0.3
+  },
+  "motifs": [
+    {
+      "family": "spiral_galaxy",
+      "id": "julia_spiral",
+      "priority": 1,
+      "params": {
+        "arm_count": 1,
+        "circle_chain": true,
+        "circle_count": 151,
+        "radius_progression": "julia_set",
+        "fractal_depth": 1,
+        "julia_c": [-0.7, 0.27]
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "spiral",
+    "ring_flows": [],
+    "imperfection": 0.15
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.2,
+    "contrast": 0.85,
+    "specular_variation": 0.4
+  }
+}
+
+
+### ===== FILE: formations/triple_julia_avebury_1996.json =====
+
+{
+  "id": "triple_julia_avebury_1996",
+  "name": "Triple Julia Set Avebury",
+  "epoch": "classic_90s",
+  "complexity": 4,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 152.0,
+    "symmetry_order": 3,
+    "sector_count": 3,
+    "ring_count": 2,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "triangle"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.6,
+    "alien_technical": 0.9,
+    "minimalist": 0.1
+  },
+  "motifs": [
+    {
+      "family": "spiral_galaxy",
+      "id": "julia_arm_0",
+      "priority": 1,
+      "params": {
+        "arm_count": 1,
+        "rotation_offset": 0.0,
+        "circle_chain": true,
+        "circle_count": 180,
+        "radius_progression": "julia_set",
+        "fractal_depth": 1,
+        "julia_c": [-0.7, 0.27]
+      }
+    },
+    {
+      "family": "spiral_galaxy",
+      "id": "julia_arm_1",
+      "priority": 1,
+      "params": {
+        "arm_count": 1,
+        "rotation_offset": 2.094,
+        "circle_chain": true,
+        "circle_count": 180,
+        "radius_progression": "julia_set",
+        "fractal_depth": 1,
+        "julia_c": [-0.7, 0.27]
+      }
+    },
+    {
+      "family": "spiral_galaxy",
+      "id": "julia_arm_2",
+      "priority": 1,
+      "params": {
+        "arm_count": 1,
+        "rotation_offset": 4.189,
+        "circle_chain": true,
+        "circle_count": 180,
+        "radius_progression": "julia_set",
+        "fractal_depth": 1,
+        "julia_c": [-0.7, 0.27]
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "spiral",
+    "ring_flows": [],
+    "imperfection": 0.18
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.2,
+    "contrast": 0.85,
+    "specular_variation": 0.45
+  }
+}
+
+
+### ===== FILE: formations/koch_fractal_milk_hill_1997.json =====
+
+{
+  "id": "koch_fractal_milk_hill_1997",
+  "name": "Koch Fractal Milk Hill",
+  "epoch": "classic_90s",
+  "complexity": 4,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "late_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 120.0,
+    "symmetry_order": 6,
+    "sector_count": 6,
+    "ring_count": 1,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.4,
+    "alien_technical": 0.8,
+    "minimalist": 0.2
+  },
+  "motifs": [
+    {
+      "family": "circle_mandala",
+      "id": "koch_outline",
+      "priority": 1,
+      "params": {
+        "fractal_type": "koch_snowflake",
+        "iteration_depth": 3,
+        "reference_points": 346,
+        "interior": "standing_crop",
+        "edge_style": "jagged_recursive"
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "edge_satellites",
+      "type": "mini_circle",
+      "region": "outer_boundary",
+      "params": {
+        "density": 0.8,
+        "has_central_hole": false,
+        "swirl_offset": 0.0
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.12
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.1,
+    "contrast": 0.9,
+    "specular_variation": 0.35
+  }
+}
+
+
+### ===== FILE: formations/barbury_castle_tetrahedron_1991.json =====
+
+{
+  "id": "barbury_castle_tetrahedron_1991",
+  "name": "Barbury Castle Tetrahedron",
+  "epoch": "early",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 90.0,
+    "symmetry_order": 3,
+    "sector_count": 3,
+    "ring_count": 2,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "triangle"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.9,
+    "alien_technical": 0.5,
+    "minimalist": 0.4
+  },
+  "motifs": [
+    {
+      "family": "cube_projection",
+      "id": "tetrahedron_main",
+      "priority": 1,
+      "params": {
+        "solid_type": "tetrahedron",
+        "projection": "top_down",
+        "vertex_circles": true,
+        "vertex_circle_count": 3,
+        "edge_lines": true,
+        "central_disc": true
+      }
+    },
+    {
+      "family": "circle_group",
+      "id": "vertex_satellites",
+      "priority": 2,
+      "params": {
+        "count": 3,
+        "placement": "triangle_vertices",
+        "has_inner_ring": true
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "inner_ratchet",
+      "type": "weave_ring",
+      "region": "inner_disc",
+      "params": {
+        "segment_count": 12,
+        "alternating": true
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" }
+    ],
+    "imperfection": 0.1
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.2,
+    "contrast": 0.85,
+    "specular_variation": 0.4
+  }
+}
+
+
+### ===== FILE: formations/solar_system_longwood_warren_1995.json =====
+
+{
+  "id": "solar_system_longwood_warren_1995",
+  "name": "Solar System Longwood Warren",
+  "epoch": "classic_90s",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "barley",
+    "season": "early_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 80.0,
+    "symmetry_order": 1,
+    "sector_count": 1,
+    "ring_count": 6,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.5,
+    "alien_technical": 0.9,
+    "minimalist": 0.5
+  },
+  "motifs": [
+    {
+      "family": "solar_system",
+      "id": "orbital_diagram",
+      "priority": 1,
+      "params": {
+        "planet_count": 6,
+        "central_disc": true,
+        "orbit_rings": true,
+        "planet_positions_encoded": true,
+        "alignment_date": "1995-06-22",
+        "asteroid_belt": true,
+        "comet_path": false
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.05
+  },
+  "encoding": {
+    "grid_mode": "polar",
+    "bitmap_resolution": [6, 1],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": true, "system": "solar_position" },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.15,
+    "contrast": 0.9,
+    "specular_variation": 0.3
+  }
+}
+
+
+### ===== FILE: formations/galaxy_west_stowell_1994.json =====
+
+{
+  "id": "galaxy_west_stowell_1994",
+  "name": "Galaxy West Stowell",
+  "epoch": "classic_90s",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 100.0,
+    "symmetry_order": 4,
+    "sector_count": 16,
+    "ring_count": 3,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.7,
+    "alien_technical": 0.5,
+    "minimalist": 0.2
+  },
+  "motifs": [
+    {
+      "family": "spiral_galaxy",
+      "id": "main_galaxy",
+      "priority": 1,
+      "params": {
+        "arm_count": 4,
+        "circle_chain": true,
+        "circle_count": 80,
+        "radius_progression": "logarithmic",
+        "fractal_depth": 1,
+        "bar_structure": true
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "core_cluster",
+      "type": "star_cluster",
+      "region": "inner_disc",
+      "params": {
+        "density": 0.7,
+        "radial_scatter": 0.2
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "spiral",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" },
+      { "ring_index": 1, "direction": "cw" }
+    ],
+    "imperfection": 0.25
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.35,
+    "contrast": 0.75,
+    "specular_variation": 0.5
+  }
+}
+
+
+### ===== FILE: formations/dna_helix_alton_barnes_1996.json =====
+
+{
+  "id": "dna_helix_alton_barnes_1996",
+  "name": "DNA Helix Alton Barnes",
+  "epoch": "classic_90s",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "early_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 55.0,
+    "symmetry_order": 2,
+    "sector_count": 2,
+    "ring_count": 1,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "line"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.4,
+    "alien_technical": 0.9,
+    "minimalist": 0.3
+  },
+  "motifs": [
+    {
+      "family": "dna_helix",
+      "id": "double_helix",
+      "priority": 1,
+      "params": {
+        "strand_count": 2,
+        "base_pair_count": 22,
+        "circle_nodes": true,
+        "axis_orientation": "vertical",
+        "helix_pitch": 8.0,
+        "strand_offset": 0.5,
+        "base_pair_style": "bar"
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "tangential",
+    "ring_flows": [],
+    "imperfection": 0.2
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.25,
+    "contrast": 0.8,
+    "specular_variation": 0.4
+  }
+}
+
+
+### ===== FILE: formations/spiderweb_avebury_1994.json =====
+
+{
+  "id": "spiderweb_avebury_1994",
+  "name": "Spiderweb Avebury",
+  "epoch": "classic_90s",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "late_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 70.0,
+    "symmetry_order": 5,
+    "sector_count": 10,
+    "ring_count": 4,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.8,
+    "alien_technical": 0.3,
+    "minimalist": 0.4
+  },
+  "motifs": [
+    {
+      "family": "vesica_torus",
+      "id": "web_structure",
+      "priority": 1,
+      "params": {
+        "radial_lines": 10,
+        "concentric_rings": 4,
+        "ring_spacing": "uniform",
+        "web_style": "spider",
+        "node_circles": false
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "ring_weave",
+      "type": "weave_ring",
+      "region": "ring_2",
+      "params": {
+        "segment_count": 20,
+        "alternating": true
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "tangential",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" },
+      { "ring_index": 1, "direction": "ccw" },
+      { "ring_index": 2, "direction": "cw" },
+      { "ring_index": 3, "direction": "ccw" }
+    ],
+    "imperfection": 0.15
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.3,
+    "contrast": 0.7,
+    "specular_variation": 0.6
+  }
+}
+
+
+### ===== FILE: formations/angel_great_shelford_2001.json =====
+
+{
+  "id": "angel_great_shelford_2001",
+  "name": "Angel Great Shelford",
+  "epoch": "modern",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 60.0,
+    "symmetry_order": 2,
+    "sector_count": 2,
+    "ring_count": 1,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.5,
+    "alien_technical": 0.4,
+    "minimalist": 0.6
+  },
+  "motifs": [
+    {
+      "family": "bird_angel",
+      "id": "angel_body",
+      "priority": 1,
+      "params": {
+        "body_circles": 5,
+        "wing_style": "arc_layered",
+        "wing_span_ratio": 2.0,
+        "head_disc": true,
+        "tail_extension": true,
+        "bilateral_symmetry": true
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.2
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": [
+      {
+        "id": "angel_icon",
+        "type": "goddess",
+        "embedding_mode": "center",
+        "scale": 0.9,
+        "orientation": 0.0,
+        "detail_level": 0.5
+      }
+    ]
+  },
+  "medium_render": {
+    "edge_softness": 0.3,
+    "contrast": 0.75,
+    "specular_variation": 0.45
+  }
+}
+
+
+### ===== FILE: formations/magnetic_fields_avebury_2000.json =====
+
+{
+  "id": "magnetic_fields_avebury_2000",
+  "name": "Magnetic Fields Avebury Trusloe",
+  "epoch": "modern",
+  "complexity": 4,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 110.0,
+    "symmetry_order": 6,
+    "sector_count": 12,
+    "ring_count": 6,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.9,
+    "alien_technical": 0.4,
+    "minimalist": 0.2
+  },
+  "motifs": [
+    {
+      "family": "magnet_field",
+      "id": "field_lines",
+      "priority": 1,
+      "params": {
+        "foci_count": 2,
+        "field_line_count": 24,
+        "field_type": "dipole",
+        "arc_style": "smooth",
+        "interference_rings": true
+      }
+    },
+    {
+      "family": "circle_mandala",
+      "id": "frame_rings",
+      "priority": 2,
+      "params": {
+        "ring_count": 3,
+        "petal_count": 0,
+        "star_orders": []
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "node_horns",
+      "type": "horn",
+      "region": "ring_3",
+      "params": {
+        "count": 12,
+        "curvature": 0.6
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "custom_field",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" },
+      { "ring_index": 1, "direction": "ccw" },
+      { "ring_index": 2, "direction": "cw" },
+      { "ring_index": 3, "direction": "ccw" }
+    ],
+    "imperfection": 0.1
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.2,
+    "contrast": 0.85,
+    "specular_variation": 0.5
+  }
+}
+
+
+### ===== FILE: formations/silbury_sun_wheel_2004.json =====
+
+{
+  "id": "silbury_sun_wheel_2004",
+  "name": "Silbury Sun Wheel",
+  "epoch": "modern",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "early_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 53.0,
+    "symmetry_order": 8,
+    "sector_count": 8,
+    "ring_count": 3,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.9,
+    "alien_technical": 0.3,
+    "minimalist": 0.3
+  },
+  "motifs": [
+    {
+      "family": "circle_mandala",
+      "id": "sun_wheel",
+      "priority": 1,
+      "params": {
+        "ring_count": 3,
+        "spoke_count": 8,
+        "flame_segments": true,
+        "flame_count": 8,
+        "central_disc": true,
+        "outer_ring": true
+      }
+    }
+  ],
+  "micro_motifs": [
+    {
+      "id": "spoke_tips",
+      "type": "mini_circle",
+      "region": "ring_2",
+      "params": {
+        "density": 1.0,
+        "has_central_hole": false,
+        "swirl_offset": 0.0
+      }
+    }
+  ],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [
+      { "ring_index": 0, "direction": "cw" }
+    ],
+    "imperfection": 0.08
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.15,
+    "contrast": 0.9,
+    "specular_variation": 0.35
+  }
+}
+
+
+### ===== FILE: formations/chilbolton_arecibo_2001.json =====
+
+{
+  "id": "chilbolton_arecibo_2001",
+  "name": "Chilbolton Arecibo Response",
+  "epoch": "modern",
+  "complexity": 4,
+  "medium": {
+    "crop_type": "grass",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 40.0,
+    "symmetry_order": 1,
+    "sector_count": 1,
+    "ring_count": 0,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.2,
+    "alien_technical": 1.0,
+    "minimalist": 0.1
+  },
+  "motifs": [
+    {
+      "family": "message_grid",
+      "id": "arecibo_response",
+      "priority": 1,
+      "params": {
+        "grid_cols": 73,
+        "grid_rows": 23,
+        "encoding": "binary_raster",
+        "message_type": "arecibo_response",
+        "changes_from_original": [
+          "dna_strand_modified",
+          "element_list_modified",
+          "figure_modified",
+          "solar_system_modified",
+          "transmitter_modified"
+        ],
+        "cell_style": "standing_vs_flattened"
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.05
+  },
+  "encoding": {
+    "grid_mode": "rectangular",
+    "bitmap_resolution": [73, 23],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.05,
+    "contrast": 0.95,
+    "specular_variation": 0.2
+  }
+}
+
+
+### ===== FILE: formations/chilbolton_face_2001.json =====
+
+{
+  "id": "chilbolton_face_2001",
+  "name": "Chilbolton Face",
+  "epoch": "modern",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "grass",
+    "season": "mid_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 35.0,
+    "symmetry_order": 1,
+    "sector_count": 1,
+    "ring_count": 0,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.1,
+    "alien_technical": 1.0,
+    "minimalist": 0.2
+  },
+  "motifs": [
+    {
+      "family": "message_grid",
+      "id": "halftone_face",
+      "priority": 1,
+      "params": {
+        "render_mode": "halftone_raster",
+        "subject": "humanoid_face",
+        "dot_size_variation": true,
+        "dot_size_range": [0.1, 1.0],
+        "grid_cols": 60,
+        "grid_rows": 80,
+        "bilateral_symmetry": false
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.08
+  },
+  "encoding": {
+    "grid_mode": "rectangular",
+    "bitmap_resolution": [60, 80],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.1,
+    "contrast": 0.9,
+    "specular_variation": 0.3
+  }
+}
+
+
+### ===== FILE: formations/crabwood_alien_disk_2002.json =====
+
+{
+  "id": "crabwood_alien_disk_2002",
+  "name": "Crabwood Alien Face and Disk",
+  "epoch": "modern",
+  "complexity": 4,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "late_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 80.0,
+    "symmetry_order": 1,
+    "sector_count": 1,
+    "ring_count": 1,
+    "center_offset": [0.3, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.3,
+    "alien_technical": 1.0,
+    "minimalist": 0.1
+  },
+  "motifs": [
+    {
+      "family": "message_grid",
+      "id": "alien_face",
+      "priority": 1,
+      "params": {
+        "render_mode": "halftone_raster",
+        "subject": "grey_alien_face",
+        "dot_size_variation": true,
+        "dot_size_range": [0.05, 1.0],
+        "grid_cols": 80,
+        "grid_rows": 100,
+        "bilateral_symmetry": true
+      }
+    },
+    {
+      "family": "message_grid",
+      "id": "cd_disk_binary",
+      "priority": 2,
+      "params": {
+        "render_mode": "binary_spiral",
+        "encoding": "ascii_spiral",
+        "message": "Beware the bearers of FALSE gifts and their BROKEN PROMISES. Much PAIN but still time. BELIEVE. There is GOOD out there. We OPPOSE DECEPTION. COnduit CLOSING",
+        "spiral_turns": 3,
+        "bit_density": "high"
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.06
+  },
+  "encoding": {
+    "grid_mode": "polar",
+    "bitmap_resolution": [80, 100],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.08,
+    "contrast": 0.92,
+    "specular_variation": 0.25
+  }
+}
+
+
+### ===== FILE: formations/barbury_pi_2008.json =====
+
+{
+  "id": "barbury_pi_2008",
+  "name": "Barbury Castle Pi Encoder",
+  "epoch": "modern",
+  "complexity": 4,
+  "medium": {
+    "crop_type": "wheat",
+    "season": "early_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 80.0,
+    "symmetry_order": 10,
+    "sector_count": 40,
+    "ring_count": 3,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.7,
+    "alien_technical": 0.9,
+    "minimalist": 0.2
+  },
+  "motifs": [
+    {
+      "family": "pi_encoder",
+      "id": "pi_ring",
+      "priority": 1,
+      "params": {
+        "digit_count": 10,
+        "base": 10,
+        "outer_radius": 1.0,
+        "inner_radius": 0.6
+      }
+    },
+    {
+      "family": "circle_mandala",
+      "id": "frame",
+      "priority": 2,
+      "params": {
+        "ring_count": 2,
+        "petal_count": 0,
+        "star_orders": [5]
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "radial",
+    "ring_flows": [],
+    "imperfection": 0.1
+  },
+  "encoding": {
+    "grid_mode": "polar",
+    "bitmap_resolution": [10, 1],
+    "pi_encoder": { "enabled": true, "digits": 10 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.25,
+    "contrast": 0.85,
+    "specular_variation": 0.4
+  }
+}
+
+
+### ===== FILE: formations/sunnyside_labyrinth_2015.json =====
+
+{
+  "id": "sunnyside_labyrinth_2015",
+  "name": "Sunnyside Classical Labyrinth",
+  "epoch": "modern",
+  "complexity": 3,
+  "medium": {
+    "crop_type": "barley",
+    "season": "early_summer",
+    "ghost_layers": 0
+  },
+  "layout": {
+    "footprint_radius": 15.0,
+    "symmetry_order": 1,
+    "sector_count": 1,
+    "ring_count": 8,
+    "center_offset": [0.0, 0.0],
+    "meta_pattern": "none"
+  },
+  "style_weights": {
+    "sacred_geometry": 0.6,
+    "alien_technical": 0.1,
+    "minimalist": 0.5
+  },
+  "motifs": [
+    {
+      "family": "labyrinth",
+      "id": "main_labyrinth",
+      "priority": 1,
+      "params": {
+        "circuit_count": 7,
+        "inverse": false,
+        "path_width": 1.0
+      }
+    }
+  ],
+  "micro_motifs": [],
+  "flow": {
+    "global_flow": "tangential",
+    "ring_flows": [],
+    "imperfection": 0.3
+  },
+  "encoding": {
+    "grid_mode": "none",
+    "bitmap_resolution": [0, 0],
+    "pi_encoder": { "enabled": false, "digits": 0 },
+    "calendar": { "enabled": false, "system": null },
+    "symbol_icons": []
+  },
+  "medium_render": {
+    "edge_softness": 0.35,
+    "contrast": 0.75,
+    "specular_variation": 0.5
+  }
+}
+
+
+### ===== FILE: validate.js =====
+
+#!/usr/bin/env node
+// validate.js
+// Validates formation JSON files in formations/ against the crop circle schema.
+// Usage:
+//   node validate.js                    → validate all files in formations/
+//   node validate.js milk_hill_2001     → validate one (with or without .json)
+//   node validate.js formations/milk_hill_2001.json  → validate by path
+
+const fs = require('fs');
+const path = require('path');
+
+// ── Schema constraints ──────────────────────────────────────────────────────
+
+const VALID_EPOCHS = ['early', 'classic_90s', 'modern', 'experimental'];
+const VALID_COMPLEXITY = [1, 2, 3, 4];
+const VALID_CROP_TYPES = ['wheat', 'barley', 'canola', 'maize', 'oats', 'grass', 'snow', 'other'];
+const VALID_MOTIF_FAMILIES = [
+  'circle_simple', 'circle_group', 'circle_mandala', 'spiral_galaxy',
+  'labyrinth', 'yin_yang', 'cube_projection', 'hypercube_cross',
+  'metatrons_cube', 'vesica_torus', 'dna_helix', 'insectogram',
+  'serpent_chain', 'bird_angel', 'tree_axis', 'chakra_column',
+  'magnet_field', 'solar_system', 'message_grid', 'pi_encoder',
+  'calendar_diagram', 'symbolic_icon'
+];
+const VALID_MICRO_MOTIF_TYPES = [
+  'mini_circle', 'horn', 'figure8', 'checkerboard', 'weave_ring', 'star_cluster'
+];
+const VALID_GLOBAL_FLOWS = ['radial', 'spiral', 'tangential', 'custom_field'];
+const VALID_GRID_MODES = ['none', 'rectangular', 'polar'];
+const VALID_SYMBOL_TYPES = ['pentagram', 'triquetra', 'tree', 'bird', 'goddess', 'eye', 'chakra', 'other'];
+const VALID_EMBEDDING_MODES = ['center', 'ring', 'satellite'];
+
+// ── Validator ───────────────────────────────────────────────────────────────
+
+function validate(filePath) {
+  const errors = [];
+  const warnings = [];
+
+  // Load file
+  let raw;
+  try {
+    raw = fs.readFileSync(filePath, 'utf8');
+  } catch (e) {
+    return { ok: false, errors: [`Cannot read file: ${e.message}`], warnings: [] };
+  }
+
+  // Parse JSON
+  let f;
+  try {
+    f = JSON.parse(raw);
+  } catch (e) {
+    return { ok: false, errors: [`Invalid JSON: ${e.message}`], warnings: [] };
+  }
+
+  const name = path.basename(filePath, '.json');
+
+  // id matches filename
+  if (!f.id) {
+    errors.push('Missing required field: id');
+  } else if (f.id !== name) {
+    errors.push(`id "${f.id}" does not match filename "${name}"`);
+  }
+
+  // Required string fields
+  for (const field of ['name', 'epoch']) {
+    if (!f[field]) errors.push(`Missing required field: ${field}`);
+  }
+
+  // epoch enum
+  if (f.epoch && !VALID_EPOCHS.includes(f.epoch)) {
+    errors.push(`Invalid epoch "${f.epoch}". Must be one of: ${VALID_EPOCHS.join(', ')}`);
+  }
+
+  // complexity
+  if (f.complexity === undefined) {
+    errors.push('Missing required field: complexity');
+  } else if (!VALID_COMPLEXITY.includes(f.complexity)) {
+    errors.push(`Invalid complexity ${f.complexity}. Must be 1, 2, 3, or 4`);
+  }
+
+  // medium
+  if (!f.medium) {
+    errors.push('Missing required field: medium');
+  } else {
+    if (!f.medium.crop_type) errors.push('Missing medium.crop_type');
+    else if (!VALID_CROP_TYPES.includes(f.medium.crop_type)) {
+      errors.push(`Invalid medium.crop_type "${f.medium.crop_type}"`);
+    }
+    if (typeof f.medium.ghost_layers !== 'number') errors.push('medium.ghost_layers must be a number');
+  }
+
+  // layout
+  if (!f.layout) {
+    errors.push('Missing required field: layout');
+  } else {
+    if (typeof f.layout.footprint_radius !== 'number') errors.push('layout.footprint_radius must be a number');
+    if (typeof f.layout.symmetry_order !== 'number') errors.push('layout.symmetry_order must be a number');
+    if (typeof f.layout.sector_count !== 'number') errors.push('layout.sector_count must be a number');
+    if (typeof f.layout.ring_count !== 'number') errors.push('layout.ring_count must be a number');
+    if (!Array.isArray(f.layout.center_offset) || f.layout.center_offset.length !== 2) {
+      errors.push('layout.center_offset must be [number, number]');
+    }
+  }
+
+  // style_weights
+  if (!f.style_weights) {
+    errors.push('Missing required field: style_weights');
+  } else {
+    for (const key of ['sacred_geometry', 'alien_technical', 'minimalist']) {
+      const v = f.style_weights[key];
+      if (typeof v !== 'number') errors.push(`style_weights.${key} must be a number`);
+      else if (v < 0 || v > 1) errors.push(`style_weights.${key} must be between 0.0 and 1.0, got ${v}`);
+    }
+    const sum = (f.style_weights.sacred_geometry || 0) +
+                (f.style_weights.alien_technical || 0) +
+                (f.style_weights.minimalist || 0);
+    if (sum > 3.0) errors.push(`style_weights sum ${sum.toFixed(2)} exceeds 3.0`);
+  }
+
+  // motifs
+  if (!Array.isArray(f.motifs)) {
+    errors.push('Missing required field: motifs (must be array)');
+  } else {
+    if (f.motifs.length === 0) warnings.push('motifs array is empty');
+    const hasPriority1 = f.motifs.some(m => m.priority === 1);
+    if (!hasPriority1) errors.push('motifs must contain at least one entry with priority: 1');
+    f.motifs.forEach((m, i) => {
+      if (!m.family) errors.push(`motifs[${i}] missing family`);
+      else if (!VALID_MOTIF_FAMILIES.includes(m.family)) {
+        errors.push(`motifs[${i}] invalid family "${m.family}"`);
+      }
+      if (!m.id) errors.push(`motifs[${i}] missing id`);
+      if (typeof m.priority !== 'number') errors.push(`motifs[${i}] priority must be a number`);
+    });
+  }
+
+  // micro_motifs
+  if (!Array.isArray(f.micro_motifs)) {
+    errors.push('micro_motifs must be an array (can be empty [])');
+  } else {
+    f.micro_motifs.forEach((m, i) => {
+      if (!m.type) errors.push(`micro_motifs[${i}] missing type`);
+      else if (!VALID_MICRO_MOTIF_TYPES.includes(m.type)) {
+        errors.push(`micro_motifs[${i}] invalid type "${m.type}"`);
+      }
+    });
+  }
+
+  // flow
+  if (!f.flow) {
+    errors.push('Missing required field: flow');
+  } else {
+    if (!VALID_GLOBAL_FLOWS.includes(f.flow.global_flow)) {
+      errors.push(`Invalid flow.global_flow "${f.flow.global_flow}". Must be: ${VALID_GLOBAL_FLOWS.join(', ')}`);
+    }
+    if (typeof f.flow.imperfection !== 'number') {
+      errors.push('flow.imperfection must be a number');
+    } else if (f.flow.imperfection < 0 || f.flow.imperfection > 1) {
+      errors.push(`flow.imperfection ${f.flow.imperfection} must be between 0.0 and 1.0`);
+    }
+    if (!Array.isArray(f.flow.ring_flows)) errors.push('flow.ring_flows must be an array');
+  }
+
+  // encoding
+  if (!f.encoding) {
+    errors.push('Missing required field: encoding');
+  } else {
+    if (!VALID_GRID_MODES.includes(f.encoding.grid_mode)) {
+      errors.push(`Invalid encoding.grid_mode "${f.encoding.grid_mode}"`);
+    }
+    if (!Array.isArray(f.encoding.bitmap_resolution) || f.encoding.bitmap_resolution.length !== 2) {
+      errors.push('encoding.bitmap_resolution must be [number, number]');
+    }
+    if (!f.encoding.pi_encoder || typeof f.encoding.pi_encoder.enabled !== 'boolean') {
+      errors.push('encoding.pi_encoder.enabled must be boolean');
+    }
+  }
+
+  // medium_render
+  if (!f.medium_render) {
+    errors.push('Missing required field: medium_render');
+  } else {
+    for (const key of ['edge_softness', 'contrast', 'specular_variation']) {
+      const v = f.medium_render[key];
+      if (typeof v !== 'number') errors.push(`medium_render.${key} must be a number`);
+      else if (v < 0 || v > 1) errors.push(`medium_render.${key} ${v} must be between 0.0 and 1.0`);
+    }
+  }
+
+  return {
+    ok: errors.length === 0,
+    errors,
+    warnings
+  };
+}
+
+// ── CLI runner ───────────────────────────────────────────────────────────────
+
+function resolveFilePaths(arg) {
+  if (!arg) {
+    // No arg: validate all files in formations/
+    const dir = path.join(__dirname, 'formations');
+    if (!fs.existsSync(dir)) {
+      console.error('formations/ directory not found');
+      process.exit(1);
+    }
+    return fs.readdirSync(dir)
+      .filter(f => f.endsWith('.json'))
+      .map(f => path.join(dir, f));
+  }
+
+  // Single file arg
+  let resolved = arg;
+  if (!resolved.endsWith('.json')) resolved += '.json';
+  if (!path.isAbsolute(resolved)) {
+    // Try formations/ first, then relative
+    const inFormations = path.join(__dirname, 'formations', resolved);
+    const relative = path.join(__dirname, resolved);
+    if (fs.existsSync(inFormations)) return [inFormations];
+    if (fs.existsSync(relative)) return [relative];
+    console.error(`File not found: ${arg}`);
+    process.exit(1);
+  }
+  return [resolved];
+}
+
+const arg = process.argv[2];
+const files = resolveFilePaths(arg);
+
+let passCount = 0;
+let failCount = 0;
+
+for (const filePath of files) {
+  const shortName = path.basename(filePath);
+  const result = validate(filePath);
+
+  if (result.ok) {
+    console.log(`✅ ${shortName}`);
+    if (result.warnings.length > 0) {
+      result.warnings.forEach(w => console.log(`   ⚠️  ${w}`));
+    }
+    passCount++;
+  } else {
+    console.log(`❌ ${shortName}`);
+    result.errors.forEach(e => console.log(`   ERROR: ${e}`));
+    result.warnings.forEach(w => console.log(`   WARN:  ${w}`));
+    failCount++;
+  }
+}
+
+console.log(`\n${passCount} passed, ${failCount} failed (${files.length} total)`);
+if (failCount > 0) process.exit(1);
+
+
+### ===== FILE: .gitignore =====
+
+.DS_Store
+.AppleDouble
+._*
+node_modules/
+npm-debug.log*
+.env
+*.log
+*.tmp
+.idea/
+.vscode/
+
+
+### ===== FILE: LICENSE =====
+
+MIT License
+
+Copyright (c) 2026 merrypranxter
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Configuration Notes
+- No build step, no npm install needed for basic usage
+- `validate.js` requires only Node.js stdlib (fs, path) — no dependencies
+- `docs/crop-circle-schema.jsonc` is the source of truth — do not auto-generate from it
+- `index.json` is maintained manually (or by Copilot) alongside formation files
+
+## Next Steps
+1. `git clone https://github.com/merrypranxter/crop_circles.git`
+2. Copy all files from this seed into the repo (docs/ files already exist — keep them)
+3. `node validate.js` — all 17 formations should pass
+4. `git add . && git commit -m "Scaffold: 17 formations, validator, index, AGENTS.md"`
+5. `git push origin main`
