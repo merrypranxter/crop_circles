@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hawkins' Theorem V (General Theorem)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">HAWKINS' THEOREM V</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            The General Theorem from which Hawkins' other four crop circle theorems are derived. 
+            It involves a triangle and various concentric circles touching the triangle's sides and corners. 
+            As the triangle changes shape (equilateral, isosceles, right), it generates the geometries found in the fields.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            // Define an arbitrary triangle (scalene/isosceles mix) to demonstrate the general theorem
+            const pts = [
+                { x: cx, y: cy - 180 },
+                { x: cx + 180, y: cy + 120 },
+                { x: cx - 140, y: cy + 150 }
+            ];
+            
+            ctx.strokeStyle = THEME;
+            ctx.lineWidth = 2;
+
+            // Draw Triangle
+            ctx.beginPath();
+            ctx.moveTo(pts[0].x, pts[0].y);
+            ctx.lineTo(pts[1].x, pts[1].y);
+            ctx.lineTo(pts[2].x, pts[2].y);
+            ctx.closePath();
+            ctx.stroke();
+
+            // Calculate Incenter (Center of inscribed circle)
+            const a = Math.hypot(pts[1].x - pts[2].x, pts[1].y - pts[2].y);
+            const b = Math.hypot(pts[0].x - pts[2].x, pts[0].y - pts[2].y);
+            const c = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
+            const perimeter = a + b + c;
+            
+            const incenter = {
+                x: (a * pts[0].x + b * pts[1].x + c * pts[2].x) / perimeter,
+                y: (a * pts[0].y + b * pts[1].y + c * pts[2].y) / perimeter
+            };
+            
+            // Calculate Inradius (Area / semiperimeter)
+            const s = perimeter / 2;
+            const area = Math.sqrt(s * (s - a) * (s - b) * (s - c)); // Heron's formula
+            const inradius = area / s;
+
+            // Draw Inscribed Circle
+            ctx.beginPath();
+            ctx.arc(incenter.x, incenter.y, inradius, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Calculate Circumcenter (Center of circumscribed circle)
+            const D = 2 * (pts[0].x * (pts[1].y - pts[2].y) + pts[1].x * (pts[2].y - pts[0].y) + pts[2].x * (pts[0].y - pts[1].y));
+            const circumcenter = {
+                x: ((pts[0].x*pts[0].x + pts[0].y*pts[0].y) * (pts[1].y - pts[2].y) + (pts[1].x*pts[1].x + pts[1].y*pts[1].y) * (pts[2].y - pts[0].y) + (pts[2].x*pts[2].x + pts[2].y*pts[2].y) * (pts[0].y - pts[1].y)) / D,
+                y: ((pts[0].x*pts[0].x + pts[0].y*pts[0].y) * (pts[2].x - pts[1].x) + (pts[1].x*pts[1].x + pts[1].y*pts[1].y) * (pts[0].x - pts[2].x) + (pts[2].x*pts[2].x + pts[2].y*pts[2].y) * (pts[1].x - pts[0].x)) / D
+            };
+            
+            // Calculate Circumradius
+            const circumradius = Math.hypot(pts[0].x - circumcenter.x, pts[0].y - circumcenter.y);
+
+            // Draw Circumscribed Circle
+            ctx.beginPath();
+            ctx.arc(circumcenter.x, circumcenter.y, circumradius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+            ctx.stroke();
+            
+            // Highlight the centers
+            ctx.fillStyle = THEME;
+            ctx.beginPath(); ctx.arc(incenter.x, incenter.y, 4, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(circumcenter.x, circumcenter.y, 4, 0, Math.PI*2); ctx.fill();
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

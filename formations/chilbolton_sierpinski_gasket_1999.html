@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chilbolton Sierpinski Gasket (1999)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">CHILBOLTON SIERPINSKI (1999)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            This formation perfectly rendered a 3rd order Sierpinski fractal triangle on the ground.
+            The recursive nature of this self-similar geometric shape represents a mathematically 
+            infinite process of subdividing an equilateral triangle.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function drawTriangle(x, y, size, inverted) {
+            ctx.beginPath();
+            const h = size * Math.sqrt(3) / 2;
+            
+            if (!inverted) {
+                ctx.moveTo(x, y - h / 2);
+                ctx.lineTo(x - size / 2, y + h / 2);
+                ctx.lineTo(x + size / 2, y + h / 2);
+            } else {
+                ctx.moveTo(x, y + h / 2);
+                ctx.lineTo(x - size / 2, y - h / 2);
+                ctx.lineTo(x + size / 2, y - h / 2);
+            }
+            
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function drawSierpinski(x, y, size, depth) {
+            if (depth === 0) {
+                drawTriangle(x, y, size, false);
+            } else {
+                const newSize = size / 2;
+                const h = newSize * Math.sqrt(3) / 2;
+                
+                // Top
+                drawSierpinski(x, y - h, newSize, depth - 1);
+                // Bottom left
+                drawSierpinski(x - newSize / 2, y + h / 2, newSize, depth - 1);
+                // Bottom right
+                drawSierpinski(x + newSize / 2, y + h / 2, newSize, depth - 1);
+            }
+        }
+
+        function draw() {
+            const R = 230; // Outer bound
+            
+            // Draw outer encompassing circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, R, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Draw Sierpinski depth 3 inside bounds
+            ctx.fillStyle = THEME;
+            // The size of the equilateral triangle inscribed in the circle
+            const size = R * Math.sqrt(3); 
+            // Adjust center offset slightly for visual alignment
+            const yOffset = cy + R/4; 
+            
+            drawSierpinski(cx, yOffset, size, 3);
+        }
+        draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Longwood Warren Solar System (1995)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">LONGWOOD WARREN SOLAR SYSTEM (1995)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            This formation explicitly modeled the inner solar system. It featured the Sun at the center, 
+            surrounded by concentric rings representing the orbits of Mercury, Venus, Earth (with its moon), 
+            and Mars, positioned accurately to simulate their planetary alignment.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            ctx.strokeStyle = THEME;
+            
+            // Sun (Central Hub)
+            ctx.beginPath();
+            ctx.arc(cx, cy, 30, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.2)';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Orbit Radii for inner planets (scaled for visuals)
+            const orbits = [
+                { r: 70,  angle: Math.PI * 1.8, size: 6 },   // Mercury
+                { r: 120, angle: Math.PI * 0.7, size: 10 },  // Venus
+                { r: 170, angle: Math.PI * 1.2, size: 12, moon: true }, // Earth
+                { r: 220, angle: Math.PI * 0.2, size: 8 }    // Mars
+            ];
+
+            orbits.forEach(planet => {
+                // Draw Orbit Track
+                ctx.beginPath();
+                ctx.arc(cx, cy, planet.r, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+                
+                // Planet Position
+                const px = cx + planet.r * Math.cos(planet.angle);
+                const py = cy + planet.r * Math.sin(planet.angle);
+                
+                // Draw Planet
+                ctx.beginPath();
+                ctx.arc(px, py, planet.size, 0, Math.PI * 2);
+                ctx.fillStyle = THEME;
+                ctx.fill();
+                
+                // If Earth, draw the Moon and its orbit
+                if (planet.moon) {
+                    const moonOrbit = planet.size + 10;
+                    
+                    ctx.beginPath();
+                    ctx.arc(px, py, moonOrbit, 0, Math.PI * 2);
+                    ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+                    ctx.stroke();
+                    
+                    const mx = px + moonOrbit * Math.cos(planet.angle + Math.PI/2);
+                    const my = py + moonOrbit * Math.sin(planet.angle + Math.PI/2);
+                    
+                    ctx.beginPath();
+                    ctx.arc(mx, my, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            });
+            
+            // Asteroid Belt (Outer Boundary of the formation)
+            const beltR = 250;
+            ctx.beginPath();
+            ctx.arc(cx, cy, beltR, 0, Math.PI * 2);
+            ctx.setLineDash([5, 10]); // Dotted/dashed line
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+            ctx.stroke();
+            ctx.setLineDash([]); // Reset
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

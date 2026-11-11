@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sunnyside Labyrinth (2015)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">SUNNYSIDE LABYRINTH (2015)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            This formation explicitly rendered a classical concentric labyrinth. It consists of multiple 
+            segmented rings with precise gaps and blockers, creating a single solvable path from the outer 
+            edge to the central core.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const rings = 7;
+            const spacing = 25;
+            const innerRadius = 40;
+            
+            ctx.strokeStyle = THEME;
+            ctx.lineWidth = 8;
+            ctx.lineCap = "round";
+
+            // Draw central goal
+            ctx.beginPath();
+            ctx.arc(cx, cy, 20, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.5)';
+            ctx.fill();
+
+            // We will simulate the labyrinth walls using segmented arcs.
+            // Data defines [startAngle, endAngle] for walls on each ring (0 to 6)
+            // Angles are in units of PI (0 to 2)
+            const labyrinthWalls = [
+                [[0.1, 1.9]], // Ring 0 (Inner)
+                [[0.1, 0.9], [1.1, 1.9]], // Ring 1
+                [[0.0, 0.5], [0.7, 1.3], [1.5, 1.9]], // Ring 2
+                [[0.1, 0.8], [1.2, 1.7]], // Ring 3
+                [[0.2, 1.0], [1.1, 1.8]], // Ring 4
+                [[0.0, 0.4], [0.6, 1.4], [1.6, 1.9]], // Ring 5
+                [[0.1, 1.8]] // Ring 6 (Outer)
+            ];
+
+            // Draw the circular walls
+            for (let i = 0; i < rings; i++) {
+                const radius = innerRadius + (i * spacing);
+                const segments = labyrinthWalls[i];
+                
+                segments.forEach(seg => {
+                    ctx.beginPath();
+                    // Offset by -PI/2 so the entrance is at the bottom
+                    ctx.arc(cx, cy, radius, (seg[0] * Math.PI) - Math.PI/2, (seg[1] * Math.PI) - Math.PI/2);
+                    ctx.stroke();
+                });
+            }
+            
+            // Draw connecting walls (blockers that force you to turn)
+            ctx.lineWidth = 6;
+            const blockers = [
+                {ringStart: 0, ringEnd: 1, angle: 1.9},
+                {ringStart: 1, ringEnd: 2, angle: 0.1},
+                {ringStart: 2, ringEnd: 3, angle: 1.3},
+                {ringStart: 3, ringEnd: 4, angle: 0.8},
+                {ringStart: 4, ringEnd: 5, angle: 1.1},
+                {ringStart: 5, ringEnd: 6, angle: 0.4}
+            ];
+
+            blockers.forEach(b => {
+                const r1 = innerRadius + (b.ringStart * spacing);
+                const r2 = innerRadius + (b.ringEnd * spacing);
+                const rad = (b.angle * Math.PI) - Math.PI/2;
+                
+                ctx.beginPath();
+                ctx.moveTo(cx + r1 * Math.cos(rad), cy + r1 * Math.sin(rad));
+                ctx.lineTo(cx + r2 * Math.cos(rad), cy + r2 * Math.sin(rad));
+                ctx.stroke();
+            });
+            
+            // Outer enclosure line
+            ctx.beginPath();
+            ctx.arc(cx, cy, innerRadius + (rings * spacing), 0, Math.PI * 2);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.2)';
+            ctx.stroke();
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

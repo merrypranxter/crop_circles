@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Picked Hill Fractional Pi (2000)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">PICKED HILL PI (2000)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            Analyzed by archaeo-astronomer Robin Heath and geometer Allan Brown, this formation 
+            is a stunning geometric proof of the fractional approximation of Pi (22/7). 
+            It utilizes 7-fold geometry (a heptagram) to define a circle's perimeter divided into 22 exact units.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const R = 200; // Radius representing 7 units of diameter (3.5 * scale)
+            const sides = 7;
+            
+            ctx.strokeStyle = THEME;
+            ctx.lineWidth = 2;
+
+            // Draw primary 7-fold polygon (Heptagon)
+            ctx.beginPath();
+            for (let i = 0; i <= sides; i++) {
+                const angle = -Math.PI / 2 + (i * Math.PI * 2 / sides);
+                const x = cx + R * Math.cos(angle);
+                const y = cy + R * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Draw 7-pointed star (Heptagram) connecting every 2nd point
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+            for (let i = 0; i <= sides; i++) {
+                const angle = -Math.PI / 2 + ((i * 2) * Math.PI * 2 / sides);
+                const x = cx + R * Math.cos(angle);
+                const y = cy + R * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Draw 22 boundary nodes (representing the 22 circumference units)
+            const nodes = 22;
+            ctx.fillStyle = THEME;
+            for (let i = 0; i < nodes; i++) {
+                const angle = -Math.PI / 2 + (i * Math.PI * 2 / nodes);
+                const x = cx + R * Math.cos(angle);
+                const y = cy + R * Math.sin(angle);
+                
+                ctx.beginPath();
+                ctx.arc(x, y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Draw inner and outer bounding circles
+            ctx.beginPath();
+            ctx.arc(cx, cy, R, 0, Math.PI * 2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            // Inner circle tangent to the heptagon
+            const innerR = R * Math.cos(Math.PI / sides);
+            ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

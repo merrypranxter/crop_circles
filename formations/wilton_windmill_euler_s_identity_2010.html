@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wilton Windmill Euler's Identity (2010)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">WILTON WINDMILL EULER (2010)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            This formation is structured into 12 segments of 30 degrees, featuring 8 concentric arc rings. 
+            The binary reading of these arcs directly translates into ASCII characters for Euler's Identity, 
+            e^(i*pi) + 1 = 0, proving an incredible mathematical design logic.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const sectors = 12;
+            const rings = 8;
+            const maxR = 220;
+            const stepR = maxR / (rings + 1);
+
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.2)';
+            ctx.lineWidth = 1;
+
+            // Draw Base Grid
+            for (let i = 0; i <= rings; i++) {
+                ctx.beginPath();
+                ctx.arc(cx, cy, i * stepR, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+            for (let i = 0; i < sectors; i++) {
+                const angle = i * (Math.PI * 2 / sectors);
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + maxR * Math.cos(angle), cy + maxR * Math.sin(angle));
+                ctx.stroke();
+            }
+
+            // Binary pattern to approximate the encoded Euler's Identity
+            // True = thick filled arc, False = blank/thin line
+            const binaryData = [
+                [0,1,1,0,0,1,0,1], [0,1,0,1,1,1,1,0], [0,1,1,0,1,0,0,1],
+                [0,0,1,0,1,0,1,0], [0,1,1,1,0,0,0,0], [0,1,1,0,1,0,0,1],
+                [0,0,1,0,1,0,1,1], [0,0,1,0,0,0,0,0], [0,0,1,0,1,0,1,1],
+                [0,0,1,1,0,0,0,1], [0,0,1,1,1,1,0,1], [0,0,1,1,0,0,0,0]
+            ];
+
+            ctx.strokeStyle = THEME;
+            
+            for (let s = 0; s < sectors; s++) {
+                const startAngle = s * (Math.PI * 2 / sectors);
+                const endAngle = (s + 1) * (Math.PI * 2 / sectors);
+                
+                for (let r = 0; r < rings; r++) {
+                    if (binaryData[s][r]) {
+                        const rPos = (r + 1) * stepR;
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, rPos, startAngle, endAngle);
+                        ctx.lineWidth = stepR * 0.7; // Thick bands for binary 1
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        draw();
+    </script>
+</body>
+</html>

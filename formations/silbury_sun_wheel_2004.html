@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silbury Sun Wheel (2004)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">SILBURY SUN WHEEL (2004)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            Formed near Silbury Hill, this intricate design heavily resembles a Mayan or Aztec sun calendar. 
+            It is based on 16-fold geometry, featuring repeating feathered segments, crystalline inner facets, 
+            and complex overlapping radial vectors.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const segments = 16;
+            const r1 = 40;
+            const r2 = 90;
+            const r3 = 160;
+            const r4 = 210;
+
+            ctx.strokeStyle = THEME;
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.1)';
+
+            // Inner Star (16 pointed, alternating lengths)
+            ctx.beginPath();
+            for (let i = 0; i < segments * 2; i++) {
+                const angle = i * Math.PI / segments;
+                const r = i % 2 === 0 ? r2 : r1;
+                const x = cx + r * Math.cos(angle);
+                const y = cy + r * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Center circle
+            ctx.beginPath(); ctx.arc(cx, cy, r1, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.arc(cx, cy, 15, 0, Math.PI * 2); ctx.fill();
+
+            // Middle Geometric Band
+            ctx.beginPath(); ctx.arc(cx, cy, r3, 0, Math.PI * 2); ctx.stroke();
+            
+            for (let i = 0; i < segments; i++) {
+                const angle = i * Math.PI * 2 / segments;
+                const nextAngle = (i + 1) * Math.PI * 2 / segments;
+                const midAngle = angle + (Math.PI / segments);
+                
+                // Draw connecting 'crystalline' triangles between r2 and r3
+                ctx.beginPath();
+                ctx.moveTo(cx + r2 * Math.cos(angle), cy + r2 * Math.sin(angle));
+                ctx.lineTo(cx + r3 * Math.cos(midAngle), cy + r3 * Math.sin(midAngle));
+                ctx.lineTo(cx + r2 * Math.cos(nextAngle), cy + r2 * Math.sin(nextAngle));
+                ctx.stroke();
+            }
+
+            // Outer "Feathered" Sun Rays
+            ctx.beginPath(); ctx.arc(cx, cy, r4, 0, Math.PI * 2); ctx.stroke();
+            
+            for (let i = 0; i < segments; i++) {
+                const angle = i * Math.PI * 2 / segments;
+                const midAngle = angle + (Math.PI / segments);
+                
+                // Draw arched feathers
+                ctx.beginPath();
+                ctx.moveTo(cx + r3 * Math.cos(angle), cy + r3 * Math.sin(angle));
+                
+                // Quadratic curve outwards
+                const ctrlX = cx + (r4 * 1.1) * Math.cos(midAngle);
+                const ctrlY = cy + (r4 * 1.1) * Math.sin(midAngle);
+                const endX = cx + r3 * Math.cos(angle + (Math.PI*2/segments));
+                const endY = cy + r3 * Math.sin(angle + (Math.PI*2/segments));
+                
+                ctx.quadraticCurveTo(ctrlX, ctrlY, endX, endY);
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windmill Hill Trinary Julia (1996)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">TRINARY JULIA SET (1996)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            Appearing at Windmill Hill in Wiltshire, this formation expanded on the Stonehenge Julia Set 
+            by featuring three perfectly symmetrical fractal arms spiraling out from a central core. 
+            This visualization uses logarithmic spirals separated by 120 degrees to plot the diminishing circles.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const numArms = 3;
+            const circlesPerArm = 55;
+            const maxRadius = 220;
+            
+            // Logarithmic spiral constants
+            const a = 12; // Starting radius
+            const b = 0.15; // Growth rate
+
+            ctx.fillStyle = THEME;
+            ctx.strokeStyle = THEME;
+
+            // Central circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, 14, 0, Math.PI * 2);
+            ctx.fill();
+
+            for (let arm = 0; arm < numArms; arm++) {
+                const angleOffset = (arm * Math.PI * 2) / numArms;
+
+                for (let i = 0; i < circlesPerArm; i++) {
+                    const t = (i / circlesPerArm) * 18; 
+                    
+                    const r = a * Math.exp(b * t);
+                    const theta = t * 0.85 + angleOffset; 
+                    
+                    if (r > maxRadius) break;
+
+                    const x = cx + r * Math.cos(theta);
+                    const y = cy + r * Math.sin(theta);
+
+                    // Circle size tapers as it grows outward, mimicking the fractal depth
+                    const circleRadius = Math.max(0.5, (r * 0.12) * Math.cos(i * 0.1)); 
+
+                    // Draw main track circles
+                    ctx.beginPath();
+                    ctx.arc(x, y, Math.abs(circleRadius) + 1, 0, Math.PI * 2);
+                    
+                    if (i % 2 === 0) {
+                        ctx.fill();
+                    } else {
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+                    }
+                    
+                    // Add secondary satellite circles mapping to the Julia Set "islands"
+                    if (i % 6 === 0 && i > 10) {
+                        const satR = r + (circleRadius * 3);
+                        const sx = cx + satR * Math.cos(theta + 0.2);
+                        const sy = cy + satR * Math.sin(theta + 0.2);
+                        ctx.beginPath();
+                        ctx.arc(sx, sy, circleRadius * 0.5 + 1, 0, Math.PI*2);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        draw();
+    </script>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corhampton Diatonic Ratios</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">CORHAMPTON DIATONIC RATIOS</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            In Corhampton, three single circles were placed mathematically perfectly within an equilateral area. 
+            This was one of the first formations to exhibit a musical diatonic ratio. The radii of the circles 
+            in this visualization correspond to a major chord harmonic ratio (4:5:6).
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const boundaryR = 210;
+            
+            // Draw Equilateral Boundary Triangle
+            ctx.beginPath();
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 3; i++) {
+                const angle = -Math.PI / 2 + (i * Math.PI * 2 / 3);
+                const px = cx + boundaryR * Math.cos(angle);
+                const py = cy + boundaryR * Math.sin(angle);
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+            // Diatonic Proportions: 4, 5, 6 (Major chord: Root, Major 3rd, Perfect 5th)
+            const baseUnit = 12;
+            const r1 = 4 * baseUnit;
+            const r2 = 5 * baseUnit;
+            const r3 = 6 * baseUnit;
+
+            // Positioning them within the triangle space for aesthetic balance
+            const circles = [
+                { r: r3, angle: -Math.PI / 2 + (0 * Math.PI * 2 / 3), dist: 60 },
+                { r: r2, angle: -Math.PI / 2 + (1 * Math.PI * 2 / 3), dist: 80 },
+                { r: r1, angle: -Math.PI / 2 + (2 * Math.PI * 2 / 3), dist: 90 }
+            ];
+
+            ctx.strokeStyle = THEME;
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.15)';
+            ctx.lineWidth = 3;
+
+            circles.forEach(c => {
+                const x = cx + c.dist * Math.cos(c.angle);
+                const y = cy + c.dist * Math.sin(c.angle);
+
+                ctx.beginPath();
+                ctx.arc(x, y, c.r, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                
+                // Center point
+                ctx.beginPath();
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = THEME;
+                ctx.fill();
+            });
+            
+            // Enclosing reference circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, boundaryR, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.1)';
+            ctx.stroke();
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

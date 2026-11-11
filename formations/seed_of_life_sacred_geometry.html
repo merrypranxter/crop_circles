@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seed of Life (Sacred Geometry)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">SEED OF LIFE</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            The foundational pattern of Sacred Geometry, commonly found in crop circles. 
+            It is composed of seven overlapping circles of the same diameter, creating six-fold symmetry 
+            (the Vesica Piscis repeated). It is linked directly to harmonic diatonic ratios.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const radius = 80;
+            
+            ctx.strokeStyle = THEME;
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.1)';
+            ctx.lineWidth = 2;
+
+            // 1. Draw central circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            // 2. Draw 6 intersecting circles around the perimeter
+            for (let i = 0; i < 6; i++) {
+                const angle = (i * Math.PI * 2) / 6;
+                const px = cx + radius * Math.cos(angle);
+                const py = cy + radius * Math.sin(angle);
+
+                ctx.beginPath();
+                ctx.arc(px, py, radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+            }
+
+            // 3. Draw outer bounding circles for standard crop circle enclosure
+            ctx.beginPath();
+            ctx.arc(cx, cy, radius * 2, 0, Math.PI * 2);
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, (radius * 2) + 15, 0, Math.PI * 2);
+            ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+            ctx.stroke();
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

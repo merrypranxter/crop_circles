@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stonehenge Julia Set (1996)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">STONEHENGE JULIA SET (1996)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            Surveyed near Stonehenge, this formation features 151 circles scaling dynamically along a 
+            logarithmic spiral. It visually mimics a Julia Set fractal from complex dynamics, plotted 
+            here using polar coordinate scaling constants.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const numCircles = 151;
+            const maxRadius = 220;
+            
+            // Logarithmic spiral approximation variables
+            const a = 3;
+            const b = 0.16;
+
+            ctx.fillStyle = THEME;
+            ctx.strokeStyle = THEME;
+
+            for (let i = 0; i < numCircles; i++) {
+                const t = (i / numCircles) * 27; 
+                
+                const r = a * Math.exp(b * t);
+                const theta = t * 1.1; 
+                
+                if (r > maxRadius) break;
+
+                const x = cx + r * Math.cos(theta);
+                const y = cy + r * Math.sin(theta);
+
+                // Circle size mapping relative to radius
+                const circleRadius = r * 0.15 + 1; 
+
+                ctx.beginPath();
+                ctx.arc(x, y, circleRadius, 0, Math.PI * 2);
+                
+                if (i % 2 === 0) {
+                    ctx.lineWidth = 1.5;
+                    ctx.stroke();
+                } else {
+                    ctx.fill();
+                }
+            }
+        }
+        draw();
+    </script>
+</body>
+</html>

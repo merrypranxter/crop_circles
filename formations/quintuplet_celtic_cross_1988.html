@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quintuplet Celtic Cross (1988)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">CELTIC CROSS (1988)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            An evolution of the 1983 quintuplet design. It features a large central circle surrounded by 
+            four smaller "satellite" circles aligned to the four cardinal points. The satellites are connected 
+            by a thin band (the Celtic Cross), too narrow even for a small child to thread without disturbing the crop.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const centralRadius = 80;
+            const ringRadius = 170; // Distance to satellite centers
+            const satelliteRadius = 35;
+            
+            ctx.strokeStyle = THEME;
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.15)';
+
+            // Draw Central Circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, centralRadius, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.lineWidth = 3;
+            ctx.stroke();
+
+            // Draw the thin Celtic Cross connecting band
+            ctx.beginPath();
+            ctx.arc(cx, cy, ringRadius, 0, Math.PI * 2);
+            ctx.lineWidth = 2;
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+            ctx.stroke();
+
+            // Draw the 4 Satellite Circles at Cardinal Points
+            ctx.strokeStyle = THEME;
+            ctx.lineWidth = 3;
+            for (let i = 0; i < 4; i++) {
+                const angle = i * Math.PI / 2;
+                const sx = cx + ringRadius * Math.cos(angle);
+                const sy = cy + ringRadius * Math.sin(angle);
+                
+                ctx.beginPath();
+                ctx.arc(sx, sy, satelliteRadius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+            }
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

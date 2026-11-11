@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbury Castle Tetrahedron (1991)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">BARBURY CASTLE TETRAHEDRON (1991)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            A seminal moment in crop circle history. This Euclidean masterpiece represents a three-dimensional 
+            tetrahedron flattened into two dimensions. It features an equilateral triangle, nested central rings, 
+            and intricate spiral "ratchets" at each vertex.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const R = 150; // Radius for the main triangle vertices
+            
+            ctx.strokeStyle = THEME;
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.15)';
+            ctx.lineWidth = 2;
+
+            // 1. Central Nested Circles
+            const innerRings = [R * 0.25, R * 0.45, R * 0.55];
+            innerRings.forEach((r, idx) => {
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                if (idx === 0) ctx.fill();
+                ctx.stroke();
+            });
+
+            // 2. Main Triangle
+            ctx.beginPath();
+            for (let i = 0; i < 3; i++) {
+                const angle = -Math.PI / 2 + (i * Math.PI * 2 / 3);
+                const px = cx + R * Math.cos(angle);
+                const py = cy + R * Math.sin(angle);
+                if (i === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.closePath();
+            ctx.stroke();
+
+            // Outer ring connecting the ratchets
+            ctx.beginPath();
+            ctx.arc(cx, cy, R, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+            ctx.stroke();
+            ctx.strokeStyle = THEME; // Reset
+
+            // 3. Corner Ratchets
+            const ratchetRadius = R * 0.2;
+            
+            for (let i = 0; i < 3; i++) {
+                const centerAngle = -Math.PI / 2 + (i * Math.PI * 2 / 3);
+                const vx = cx + R * Math.cos(centerAngle);
+                const vy = cy + R * Math.sin(centerAngle);
+                
+                // Base circle at vertex
+                ctx.beginPath();
+                ctx.arc(vx, vy, ratchetRadius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+                
+                // Ratchet Arms (Curved arcs sweeping out from the vertex circle)
+                for (let j = 0; j < 3; j++) {
+                    const armAngle = centerAngle + (j * Math.PI * 2 / 3);
+                    const armStartX = vx + ratchetRadius * Math.cos(armAngle);
+                    const armStartY = vy + ratchetRadius * Math.sin(armAngle);
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(armStartX, armStartY);
+                    // Create a sweeping curve
+                    const ctrlAngle = armAngle + Math.PI/4;
+                    const ctrlX = vx + (ratchetRadius * 2.5) * Math.cos(ctrlAngle);
+                    const ctrlY = vy + (ratchetRadius * 2.5) * Math.sin(ctrlAngle);
+                    
+                    const endAngle = armAngle + Math.PI/2;
+                    const endX = vx + (ratchetRadius * 2) * Math.cos(endAngle);
+                    const endY = vy + (ratchetRadius * 2) * Math.sin(endAngle);
+                    
+                    ctx.quadraticCurveTo(ctrlX, ctrlY, endX, endY);
+                    ctx.stroke();
+                }
+            }
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

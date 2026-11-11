@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melick Nested Geometry (1997)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">MELICK NESTED GEOMETRY (1997)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            Based on the formation found in Melick, Netherlands. Threefold, fourfold, fivefold, and sixfold geometries 
+            (triangle, square, pentagon, hexagon) are perfectly hidden between a central circle and its successive concentric rings.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        // Helper to draw a regular polygon
+        function drawPolygon(radius, sides, offsetAngle = -Math.PI / 2) {
+            ctx.beginPath();
+            for (let i = 0; i < sides; i++) {
+                const angle = offsetAngle + (i * Math.PI * 2 / sides);
+                const x = cx + radius * Math.cos(angle);
+                const y = cy + radius * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.closePath();
+            ctx.stroke();
+        }
+
+        function draw() {
+            // Successive ring radii
+            const r1 = 40;
+            const r2 = 80;
+            const r3 = 130;
+            const r4 = 190;
+            const r5 = 240;
+
+            // Draw concentric rings
+            ctx.strokeStyle = THEME;
+            ctx.lineWidth = 6;
+            
+            const rings = [r1, r2, r3, r4, r5];
+            rings.forEach(r => {
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.stroke();
+            });
+
+            // Draw the hidden nested geometries as thin construction lines
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+            ctx.lineWidth = 1;
+
+            // Triangle spanning between r1 and r2
+            drawPolygon(r2, 3);
+            
+            // Square spanning between r2 and r3
+            drawPolygon(r3, 4, -Math.PI / 4);
+            
+            // Pentagon spanning between r3 and r4
+            drawPolygon(r4, 5);
+            
+            // Hexagon spanning between r4 and r5
+            drawPolygon(r5, 6, -Math.PI / 2);
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

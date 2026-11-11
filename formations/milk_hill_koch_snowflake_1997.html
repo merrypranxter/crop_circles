@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milk Hill Koch Snowflake (1997)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">KOCH FRACTAL (1997)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            Appearing at Milk Hill, this formation precisely etched a Koch Snowflake into the crop. 
+            This mathematical curve is created by iteratively adding smaller equilateral triangles to the 
+            outer segments of a base triangle, producing a continuous fractal boundary.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        // Helper function to draw the recursive Koch curve segment
+        function drawKochLine(x1, y1, x2, y2, depth) {
+            if (depth === 0) {
+                ctx.lineTo(x2, y2);
+            } else {
+                const dx = x2 - x1;
+                const dy = y2 - y1;
+                
+                const p1x = x1 + dx / 3;
+                const p1y = y1 + dy / 3;
+                
+                const p3x = x1 + 2 * dx / 3;
+                const p3y = y1 + 2 * dy / 3;
+                
+                // Calculate the peak of the equilateral triangle pushing outwards
+                // Rotate vector (dx/3, dy/3) by -60 degrees (PI/3 radians)
+                const cos60 = 0.5;
+                const sin60 = -Math.sqrt(3) / 2; // Negative for outward projection
+                
+                const vx = p3x - p1x;
+                const vy = p3y - p1y;
+                
+                const p2x = p1x + (vx * cos60 - vy * sin60);
+                const p2y = p1y + (vx * sin60 + vy * cos60);
+                
+                drawKochLine(x1, y1, p1x, p1y, depth - 1);
+                drawKochLine(p1x, p1y, p2x, p2y, depth - 1);
+                drawKochLine(p2x, p2y, p3x, p3y, depth - 1);
+                drawKochLine(p3x, p3y, x2, y2, depth - 1);
+            }
+        }
+
+        function draw() {
+            const R = 180; // Circumscribed radius of the base triangle
+            const depth = 4; // Complexity of the fractal (Crop circle was approx depth 3-4)
+            
+            ctx.strokeStyle = THEME;
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.1)';
+            ctx.lineWidth = 2;
+            
+            // Calculate base equilateral triangle vertices
+            const p1x = cx + R * Math.cos(-Math.PI / 2);
+            const p1y = cy + R * Math.sin(-Math.PI / 2);
+            
+            const p2x = cx + R * Math.cos(-Math.PI / 2 + (2 * Math.PI / 3));
+            const p2y = cy + R * Math.sin(-Math.PI / 2 + (2 * Math.PI / 3));
+            
+            const p3x = cx + R * Math.cos(-Math.PI / 2 + (4 * Math.PI / 3));
+            const p3y = cy + R * Math.sin(-Math.PI / 2 + (4 * Math.PI / 3));
+
+            // Start drawing
+            ctx.beginPath();
+            ctx.moveTo(p1x, p1y);
+            
+            // Draw the 3 sides recursively
+            drawKochLine(p1x, p1y, p2x, p2y, depth);
+            drawKochLine(p2x, p2y, p3x, p3y, depth);
+            drawKochLine(p3x, p3y, p1x, p1y, depth);
+            
+            ctx.closePath();
+            ctx.fill();
+            ctx.stroke();
+
+            // Draw bounding circles to show the geometrical containment
+            ctx.beginPath();
+            ctx.arc(cx, cy, R, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.2)';
+            ctx.stroke();
+            
+            // Outer bound of the fractal points
+            ctx.beginPath();
+            ctx.arc(cx, cy, R * (4/3), 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

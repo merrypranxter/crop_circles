@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crabwood Alien and Disk (2002)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); border-radius: 8px;}
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">CRABWOOD DISK (2002)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            Located near Winchester, this formation famously depicted a "grey" alien face holding a circular disk. 
+            The disk was formed by a continuous spiral track containing binary ASCII code that translated to an English message:
+            "Beware the bearers of FALSE gifts..."
+        </p>
+    </div>
+    
+    <div class="relative border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="700" height="400"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const THEME = '#d4af37';
+
+        function draw() {
+            // Draw Alien Face (Left Side)
+            const faceCx = 180;
+            const faceCy = 200;
+            
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.1)';
+            ctx.strokeStyle = THEME;
+            ctx.lineWidth = 2;
+
+            // Head outline
+            ctx.beginPath();
+            ctx.moveTo(faceCx, faceCy + 100); // Chin
+            ctx.bezierCurveTo(faceCx - 120, faceCy + 50, faceCx - 100, faceCy - 120, faceCx, faceCy - 140);
+            ctx.bezierCurveTo(faceCx + 100, faceCy - 120, faceCx + 120, faceCy + 50, faceCx, faceCy + 100);
+            ctx.fill();
+            ctx.stroke();
+
+            // Left Eye
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.8)';
+            ctx.ellipse(faceCx - 40, faceCy, 25, 55, -Math.PI / 6, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Right Eye
+            ctx.beginPath();
+            ctx.ellipse(faceCx + 40, faceCy, 25, 55, Math.PI / 6, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Nostrils & Mouth line
+            ctx.fillStyle = THEME;
+            ctx.beginPath(); ctx.arc(faceCx - 10, faceCy + 60, 2, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.arc(faceCx + 10, faceCy + 60, 2, 0, Math.PI*2); ctx.fill();
+            ctx.beginPath(); ctx.moveTo(faceCx - 15, faceCy + 85); ctx.lineTo(faceCx + 15, faceCy + 85); ctx.stroke();
+
+            // Draw ASCII Data Disk Spiral (Right Side)
+            const diskCx = 500;
+            const diskCy = 200;
+            const maxRadius = 150;
+            const spirals = 14; 
+            
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+            ctx.lineWidth = 1;
+            
+            // Continuous spiral track
+            ctx.beginPath();
+            for (let theta = 0; theta < Math.PI * 2 * spirals; theta += 0.1) {
+                const r = (theta / (Math.PI * 2 * spirals)) * maxRadius;
+                const x = diskCx + r * Math.cos(theta);
+                const y = diskCy + r * Math.sin(theta);
+                if (theta === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Add binary blocks to the spiral
+            ctx.fillStyle = THEME;
+            for (let theta = Math.PI*2; theta < Math.PI * 2 * spirals; theta += 0.25) {
+                // Simulate 8-bit block encoding (randomized for visualization aesthetics)
+                if (Math.random() > 0.4) {
+                    const r = (theta / (Math.PI * 2 * spirals)) * maxRadius;
+                    const x = diskCx + r * Math.cos(theta);
+                    const y = diskCy + r * Math.sin(theta);
+                    
+                    // Draw a segment block
+                    ctx.beginPath();
+                    ctx.arc(x, y, 3.5, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

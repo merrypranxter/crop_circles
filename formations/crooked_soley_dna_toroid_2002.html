@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crooked Soley DNA Toroid (2002)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">CROOKED SOLEY DNA (2002)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            Known as the DNA Toroid. It maps out 1,296 curved grid cells using a ratio of 5040 inner arc units 
+            to 2880 outer arc units. The 7920 unit total perfectly represents the geometric layout of Earth's dimensions 
+            encoded into a twisted DNA double helix laid over a continuous toroidal ring.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="600" height="600" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const innerR = 120;
+            const outerR = 260;
+            const segments = 72; // Radial segments
+            const concentricCells = 18; // Concentric rings within toroid
+            
+            // Draw radial grid lines
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.15)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < segments; i++) {
+                const angle = i * (Math.PI * 2) / segments;
+                ctx.beginPath();
+                ctx.moveTo(cx + innerR * Math.cos(angle), cy + innerR * Math.sin(angle));
+                ctx.lineTo(cx + outerR * Math.cos(angle), cy + outerR * Math.sin(angle));
+                ctx.stroke();
+            }
+
+            // Draw concentric grid lines inside the toroid
+            for (let i = 0; i <= concentricCells; i++) {
+                const r = innerR + (outerR - innerR) * (i / concentricCells);
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Draw the Double DNA Helix wave crossing the Toroid
+            ctx.strokeStyle = THEME;
+            ctx.lineWidth = 3;
+            
+            const helixWaves = 12; // Frequency of the DNA wave around the circle
+            
+            // Helix Strand 1
+            ctx.beginPath();
+            for (let angle = 0; angle <= Math.PI * 2; angle += 0.01) {
+                // Sine wave oscillating between innerR and outerR
+                const radiusWave = innerR + ((outerR - innerR) / 2) + Math.sin(angle * helixWaves) * ((outerR - innerR) / 2);
+                const x = cx + radiusWave * Math.cos(angle);
+                const y = cy + radiusWave * Math.sin(angle);
+                if (angle === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+
+            // Helix Strand 2 (Phase shifted by PI)
+            ctx.beginPath();
+            for (let angle = 0; angle <= Math.PI * 2; angle += 0.01) {
+                const radiusWave = innerR + ((outerR - innerR) / 2) + Math.sin(angle * helixWaves + Math.PI) * ((outerR - innerR) / 2);
+                const x = cx + radiusWave * Math.cos(angle);
+                const y = cy + radiusWave * Math.sin(angle);
+                if (angle === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+            
+            // Inner and Outer Boundaries
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.arc(cx, cy, innerR, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            ctx.beginPath();
+            ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

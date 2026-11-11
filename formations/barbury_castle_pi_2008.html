@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barbury Castle Pi Formation (2008)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">BARBURY CASTLE "PI" (2008)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            This geometric reconstruction visualizes the 2008 Barbury Castle formation. 
+            The circle is divided into 10 radial segments (36° each). The stepped concentric arcs 
+            encode the first ten digits of Pi (3.141592654) by stepping outward across the sectors. 
+            A small dot indicates the decimal point.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const piDigits = [3, 1, 4, 1, 5, 9, 2, 6, 5, 4];
+            const maxR = 220;
+            const stepR = maxR / 11;
+            
+            // Draw 10 radial guidelines
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.15)';
+            ctx.lineWidth = 1;
+            for (let i = 0; i < 10; i++) {
+                const angle = i * (Math.PI * 2) / 10;
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + maxR * Math.cos(angle), cy + maxR * Math.sin(angle));
+                ctx.stroke();
+            }
+
+            // Draw central circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, stepR, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.1)';
+            ctx.fill();
+            ctx.strokeStyle = THEME;
+            ctx.stroke();
+
+            let currentRadius = stepR;
+            let startAngle = -Math.PI / 2; // Start at 12 o'clock
+            const angleStep = (Math.PI * 2) / 10;
+
+            // Draw Pi arcs
+            ctx.lineCap = 'butt';
+            for (let i = 0; i < piDigits.length; i++) {
+                const digit = piDigits[i];
+                const endAngle = startAngle + (digit * angleStep);
+                
+                // Draw main track
+                ctx.lineWidth = 12;
+                ctx.strokeStyle = THEME;
+                ctx.beginPath();
+                ctx.arc(cx, cy, currentRadius, startAngle, endAngle);
+                ctx.stroke();
+                
+                // Draw perpendicular jump line
+                if (i < piDigits.length - 1) {
+                    ctx.lineWidth = 2;
+                    ctx.beginPath();
+                    ctx.moveTo(cx + currentRadius * Math.cos(endAngle), cy + currentRadius * Math.sin(endAngle));
+                    ctx.lineTo(cx + (currentRadius + stepR) * Math.cos(endAngle), cy + (currentRadius + stepR) * Math.sin(endAngle));
+                    ctx.stroke();
+                }
+                
+                // Draw decimal point
+                if (i === 0) {
+                    ctx.beginPath();
+                    const dotRadius = currentRadius + stepR/2;
+                    const dotAngle = endAngle + angleStep/2;
+                    ctx.arc(cx + dotRadius * Math.cos(dotAngle), cy + dotRadius * Math.sin(dotAngle), 6, 0, Math.PI*2);
+                    ctx.fillStyle = THEME;
+                    ctx.fill();
+                }
+
+                currentRadius += stepR;
+                startAngle = endAngle;
+            }
+        }
+        draw();
+    </script>
+</body>
+</html>

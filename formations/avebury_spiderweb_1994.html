@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avebury Spiderweb (1994)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">AVEBURY "WEB" (1994)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            According to researchers, this formation is heavily based on fivefold geometry. 
+            Two perfectly inscribed pentagrams act as the foundational structure, connected by 
+            sweeping, web-like curves that tension the entire geometric frame.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function drawPentagram(radius, rotationOffset = 0, isStroke = true) {
+            ctx.beginPath();
+            for (let i = 0; i <= 5; i++) {
+                // Connect every 2nd node for a pentagram
+                const angle = rotationOffset + -Math.PI / 2 + ((i * 2) * Math.PI * 2 / 5);
+                const x = cx + radius * Math.cos(angle);
+                const y = cy + radius * Math.sin(angle);
+                if (i === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            if (isStroke) ctx.stroke();
+            else ctx.fill();
+        }
+
+        function draw() {
+            const outerR = 210;
+            const innerR = outerR * Math.cos(Math.PI * 2 / 5) / Math.cos(Math.PI / 5); // Geometric proportion
+            
+            ctx.strokeStyle = THEME;
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.1)';
+            ctx.lineWidth = 2;
+
+            // Draw outer boundary ring
+            ctx.beginPath();
+            ctx.arc(cx, cy, outerR, 0, Math.PI * 2);
+            ctx.stroke();
+
+            // Draw primary pentagram
+            drawPentagram(outerR, 0);
+
+            // Draw inverted internal pentagram
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.6)';
+            drawPentagram(innerR, Math.PI / 5);
+
+            // Draw "spiderweb" tension curves connecting the geometries
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.3)';
+            ctx.lineWidth = 1.5;
+            
+            for (let i = 0; i < 5; i++) {
+                // Points of the outer pentagram
+                const angle1 = -Math.PI / 2 + (i * Math.PI * 2 / 5);
+                const p1x = cx + outerR * Math.cos(angle1);
+                const p1y = cy + outerR * Math.sin(angle1);
+
+                // Points of the next adjacent node
+                const angle2 = -Math.PI / 2 + ((i+1) * Math.PI * 2 / 5);
+                const p2x = cx + outerR * Math.cos(angle2);
+                const p2y = cy + outerR * Math.sin(angle2);
+                
+                // Inner nodes serving as control points for the quadratic curves
+                const ctrlAngle = -Math.PI / 2 + ((i + 0.5) * Math.PI * 2 / 5);
+                const ctrlX = cx + (innerR * 0.7) * Math.cos(ctrlAngle);
+                const ctrlY = cy + (innerR * 0.7) * Math.sin(ctrlAngle);
+
+                // Draw webbing
+                ctx.beginPath();
+                ctx.moveTo(p1x, p1y);
+                ctx.quadraticCurveTo(ctrlX, ctrlY, p2x, p2y);
+                ctx.stroke();
+                
+                // Secondary internal webbing
+                const ctrlX2 = cx + (innerR * 0.3) * Math.cos(ctrlAngle);
+                const ctrlY2 = cy + (innerR * 0.3) * Math.sin(ctrlAngle);
+                const startX = cx + innerR * Math.cos(angle1);
+                const startY = cy + innerR * Math.sin(angle1);
+                const endX = cx + innerR * Math.cos(angle2);
+                const endY = cy + innerR * Math.sin(angle2);
+                
+                ctx.beginPath();
+                ctx.moveTo(startX, startY);
+                ctx.quadraticCurveTo(ctrlX2, ctrlY2, endX, endY);
+                ctx.stroke();
+            }
+
+            // Central core
+            ctx.beginPath();
+            ctx.arc(cx, cy, 25, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.fill();
+        }
+        draw();
+    </script>
+</body>
+</html>

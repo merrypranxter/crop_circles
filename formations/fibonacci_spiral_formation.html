@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fibonacci Spiral Formation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">FIBONACCI SPIRAL</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            As highlighted in the research, certain formations mirror the Fibonacci sequence (0, 1, 1, 2, 3, 5, 8, 13...). 
+            This visualization uses the golden ratio (1.618) to mathematically position and scale 
+            a spiral of circles, reflecting how patterns emerge in sunflowers, nautilus shells, and crops.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="500" height="500" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            // Fibonacci Sequence: 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89
+            const fib = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144];
+            const scale = 1.2;
+            
+            ctx.strokeStyle = THEME;
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.2)';
+            ctx.lineWidth = 1.5;
+
+            // Draw a guiding Golden Spiral
+            ctx.beginPath();
+            for (let t = 0; t < Math.PI * 4; t += 0.1) {
+                // Golden spiral equation r = a * e^(0.3063489 * t) 
+                const r = 2 * Math.exp(0.306349 * t); 
+                const x = cx + r * Math.cos(t);
+                const y = cy + r * Math.sin(t);
+                if (t === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.2)';
+            ctx.stroke();
+            
+            ctx.strokeStyle = THEME;
+
+            // Place crop circles along the Fibonacci intervals
+            // Using the squares representation (quarter-arc centers)
+            let currX = cx;
+            let currY = cy;
+            let angle = 0;
+            
+            for (let i = 0; i < fib.length - 2; i++) {
+                const radius = fib[i] * scale;
+                const nextRadius = fib[i+1] * scale;
+                
+                // Angle advances by PI/2 for each Fibonacci step
+                angle -= Math.PI / 2;
+                
+                const px = cx + (nextRadius * 1.3) * Math.cos(angle - 0.5);
+                const py = cy + (nextRadius * 1.3) * Math.sin(angle - 0.5);
+                
+                ctx.beginPath();
+                ctx.arc(px, py, radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.stroke();
+
+                // Connect centers
+                if (i > 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(currX, currY);
+                    ctx.lineTo(px, py);
+                    ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+                    ctx.stroke();
+                    ctx.strokeStyle = THEME;
+                }
+                
+                currX = px;
+                currY = py;
+            }
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

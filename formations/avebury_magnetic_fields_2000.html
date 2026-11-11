@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Avebury Magnetic Fields (2000)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">MAGNETIC FIELDS (2000)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            Appearing at Avebury, this formation utilized the principle of interference patterns (moiré effect). 
+            By sweeping 72 identical circles whose centers lay on a smaller inner ring, the flattened crop created 
+            a perfect 3D optical illusion of a magnetic flux tube or toroidal field.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="600" height="600" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const numCircles = 72; // The number of intersecting circles
+            const pathRadius = 60; // The radius of the ring on which the centers lie
+            const circleRadius = 180; // The radius of each individual drawn circle
+            
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.4)';
+            ctx.lineWidth = 1;
+
+            // Draw the generating path (optional, for reference)
+            ctx.beginPath();
+            ctx.arc(cx, cy, pathRadius, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(212, 175, 55, 0.1)';
+            ctx.stroke();
+
+            ctx.strokeStyle = THEME;
+            
+            // Draw the overlapping rings to create the toroidal magnetic field illusion
+            for (let i = 0; i < numCircles; i++) {
+                const angle = (i * Math.PI * 2) / numCircles;
+                
+                // Calculate the center of the current circle
+                const x = cx + pathRadius * Math.cos(angle);
+                const y = cy + pathRadius * Math.sin(angle);
+                
+                ctx.beginPath();
+                ctx.arc(x, y, circleRadius, 0, Math.PI * 2);
+                ctx.stroke();
+            }
+
+            // Central core highlighting
+            ctx.beginPath();
+            ctx.arc(cx, cy, circleRadius - pathRadius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(212, 175, 55, 0.1)';
+            ctx.fill();
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Outer boundary highlighting
+            ctx.beginPath();
+            ctx.arc(cx, cy, circleRadius + pathRadius, 0, Math.PI * 2);
+            ctx.stroke();
+        }
+        
+        draw();
+    </script>
+</body>
+</html>

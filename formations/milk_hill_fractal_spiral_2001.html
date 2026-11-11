@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milk Hill Formation (2001)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #0b1c11; color: #e2e8f0; font-family: 'Inter', sans-serif; }
+        canvas { background-color: rgba(0,0,0,0.2); box-shadow: 0 10px 25px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-6">
+    <div class="max-w-2xl text-center mb-8">
+        <h1 class="text-3xl font-light text-[#d4af37] mb-4 tracking-widest">MILK HILL (2001)</h1>
+        <p class="text-slate-400 text-sm leading-relaxed">
+            The largest crop pattern of all time, consisting of 409 perfectly arrayed circles.
+            It utilizes a 6-arm fractal spiral mapped along a hexagonal grid. This code algorithmically 
+            calculates the scaling radius and outward trajectory of each circle to recreate the spiral arms.
+        </p>
+    </div>
+    
+    <div class="relative rounded-full border border-[#d4af37]/20 p-2">
+        <canvas id="cropCanvas" width="600" height="600" class="rounded-full"></canvas>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('cropCanvas');
+        const ctx = canvas.getContext('2d');
+        const cx = canvas.width / 2;
+        const cy = canvas.height / 2;
+        const THEME = '#d4af37';
+
+        function draw() {
+            const maxR = 260;
+            const arms = 6;
+            const circlesPerArm = 68; // 6 * 68 = 408 + 1 center = 409
+
+            ctx.fillStyle = THEME;
+            ctx.strokeStyle = THEME;
+            
+            // Central circle
+            ctx.beginPath();
+            ctx.arc(cx, cy, 10, 0, Math.PI * 2);
+            ctx.fill();
+
+            // 6 spiral arms
+            for (let i = 0; i < arms; i++) {
+                const armOffset = i * (Math.PI * 2 / arms);
+                
+                for (let j = 1; j <= circlesPerArm; j++) {
+                    const t = j / circlesPerArm; 
+                    
+                    // Radial distance and angular spiral
+                    const r = t * maxR;
+                    const theta = armOffset + (t * Math.PI * 1.2); 
+                    
+                    const x = cx + r * Math.cos(theta);
+                    const y = cy + r * Math.sin(theta);
+                    
+                    // The circles pulsate in size based on a sine wave mapping
+                    const baseRadius = (Math.sin(t * Math.PI * 4) * 8) + 2 + (t * 12);
+                    const circleRadius = Math.max(1, baseRadius);
+
+                    ctx.beginPath();
+                    ctx.arc(x, y, circleRadius, 0, Math.PI * 2);
+                    
+                    // Alternate fill/stroke for visual depth
+                    if (j % 3 === 0) {
+                        ctx.fill();
+                    } else {
+                        ctx.lineWidth = 1.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        draw();
+    </script>
+</body>
+</html>
